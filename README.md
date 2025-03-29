@@ -1,2 +1,2 @@
 # Libricito
-Web E-Commerce 
+Web E-Commerce aimed at bookstores and book commerce.
