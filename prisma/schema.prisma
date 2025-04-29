@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Admin {
+  idAdmin  BigInt  @id @default(autoincrement())
+  Nombre   String?
+  Apellido String?
+  idCuenta BigInt  @default(autoincrement())
+
+  @@index([idCuenta])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Comerciante {
+  IdComerciante BigInt  @id @default(autoincrement())
+  IdCuenta      BigInt
+  Nombre        String?
+  Descripcion   String?
+
+  @@index([IdCuenta])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Cuenta {
+  idCuenta BigInt  @id @default(autoincrement())
+  Gmail    String?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Genero {
+  idGenero BigInt @id @default(autoincrement())
+  Nombre   String
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model GeneroLibro {
+  idRegistroGenero BigInt  @id @default(autoincrement())
+  idProducto       BigInt
+  idGenero         BigInt?
+
+  @@index([idGenero])
+  @@index([idProducto])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model HorarioAbierto {
+  idRegistroHorario BigInt    @id @default(autoincrement())
+  idTienda          BigInt
+  HoraApertura      DateTime? @db.Timestamptz(6)
+  HoraCierre        DateTime? @db.Timestamptz(6)
+  DiaSemana         DateTime? @db.Date
+
+  @@index([idTienda])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model LodModeracion {
+  idLogMod BigInt @id @default(autoincrement())
+  idAdmin  BigInt
+
+  @@index([idAdmin])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model LodModeracionRes {
+  IdLogModRes      BigInt  @id @default(autoincrement())
+  IdLogMod         BigInt
+  IdRese_a         BigInt? @map("IdReseña")
+  MotivoModeracion String?
+
+  @@index([IdLogMod])
+  @@index([IdRese_a])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Producto {
+  idProducto      BigInt   @id @default(autoincrement())
+  Nombre          Decimal? @db.Decimal
+  Tipo            String?
+  Precio_de_Lista Decimal? @db.Decimal
+  SubProducto     String?
+  Descripcion     String?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Regiones {
+  idRegion BigInt  @id @default(autoincrement())
+  Region   String?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Rese_aProducto {
+  idRese_a    BigInt   @id @default(autoincrement()) @map("idReseña")
+  idUsuario   BigInt   @default(autoincrement())
+  idProducto  BigInt   @default(autoincrement())
+  TextoRese_a String?  @map("TextoReseña")
+  Puntuacion  Decimal? @db.Decimal
+
+  @@index([idProducto])
+  @@index([idUsuario])
+  @@map("ReseñaProducto")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Stock {
+  idRegistroStock BigInt  @id @default(autoincrement())
+  idProducto      BigInt
+  idTienda        BigInt?
+  Stock           BigInt?
+
+  @@index([idProducto])
+  @@index([idTienda])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TiendaFisica {
+  IdTienda      BigInt  @id @default(autoincrement())
+  IdComerciante BigInt
+  Nombre        String?
+  Dpto          String?
+  Calle         String?
+  Altura        String?
+  IdRegion      BigInt?
+
+  @@index([IdComerciante])
+  @@index([IdRegion])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Usuario {
+  idUsuario BigInt  @id @default(autoincrement())
+  idCuenta  BigInt
+  Nombre    String?
+  Apellido  String?
+  idRegion  BigInt?
+
+  @@index([idCuenta])
+  @@index([idRegion])
+  @@index([idRegion], map: "Usuario_idRegion_idx1")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UsuarioPreferencias {
+  idRegistroPreferencias BigInt  @id @default(autoincrement())
+  idUsuario              BigInt
+  idGenero               BigInt?
+
+  @@index([idGenero])
+  @@index([idUsuario])
+}
