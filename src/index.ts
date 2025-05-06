@@ -9,6 +9,13 @@ app.get('/', (req: Request, res: Response) => {
     });
 });
 
+app.get('*not_found', function(_, res: Response){
+    res.status(404).json({
+        "ok": false,
+        "msg": "¡No se encontró la página!"
+    });
+});
+
 app.listen(port, () => {
     console.log(`Libricito ejecutandose y escuchando http://localhost:${port}`)
 });
