@@ -4,11 +4,26 @@ export class UserService {
     async getAllUsers() {
         try {
             const users = await db.usuario.findMany();
-    
+
             return users;
         } catch (error) {
             console.error(error);
             throw new Error("Error al obtener usuarios. Mira los logs para más información.")
+        }
+    }
+
+    async getUserById(userId: string) {
+        try {
+            const user = await db.usuario.findUniqueOrThrow({
+                where: {
+                    id_usuario: parseInt(userId)
+                }
+            })
+
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error al obtener usuario con id ${userId}. Mira los logs para más información.`)
         }
     }
 }
