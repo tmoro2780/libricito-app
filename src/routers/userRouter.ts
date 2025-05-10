@@ -15,7 +15,7 @@ userRouter.get('/', async (_, res) => {
     }
 })
 
-userRouter.get('/:id', async (req, res) => {
+userRouter.get('/u/:id', async (req, res) => {
     try {
         const userIdToGet = req.params.id;
         const user = await userService.getUserById(userIdToGet);

@@ -10,149 +10,162 @@ datasource db {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Admin {
-  id_admin  BigInt  @id @default(autoincrement())
-  nombre    String?
-  apellido  String?
-  id_cuenta BigInt  @default(autoincrement())
+model Usuario {
+  id_usuario BigInt  @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  email   String
+  verificado Boolean @default(false)
+  moderador Boolean @default(false)
+  nombres     String
+  apellidos   String?
+  id_region  BigInt?
 
-  @@index([id_cuenta], map: "Admin_idCuenta_idx")
+  comercios UsuariosComercio[]
+  region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
+  intereses UsuarioPreferencias[]
+  reviews_realizadas ReviewProducto[]
+  moderaciones LogModeracionReview[]
+}
+
+model Comercio {
+  id_comercio BigInt @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  nombre String
+
+  vendedores UsuariosComercio[]
+  tiendas TiendaFisica[]
+  productos_creados Producto[]
+}
+
+model UsuariosComercio {
+  id_usuario_comercio BigInt @id @default(autoincrement())
+  id_usuario BigInt
+  id_comercio BigInt
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Comerciante {
-  id_comerciante BigInt  @id @default(autoincrement())
-  id_cuenta      BigInt
+model TiendaFisica {
+  id_tienda      BigInt  @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  id_comercio  BigInt
   nombre         String?
-  descripcion    String?
+  direccion      String
+  id_region      BigInt
 
-  @@index([id_cuenta], map: "Comerciante_IdCuenta_idx")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Cuenta {
-  id_cuenta BigInt  @id @default(autoincrement())
-  email     String?
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Genero {
-  id_genero BigInt @id @default(autoincrement())
-  nombre    String
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model GeneroLibro {
-  id_registro_genero BigInt  @id @default(autoincrement())
-  id_producto        BigInt
-  id_genero          BigInt?
-
-  @@index([id_genero], map: "GeneroLibro_idGenero_idx")
-  @@index([id_producto], map: "GeneroLibro_idProducto_idx")
+  comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
+  region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
+  horarios HorarioAbierto[]
+  stock_de_productos Stock[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model HorarioAbierto {
   id_registro_horario BigInt    @id @default(autoincrement())
   id_tienda           BigInt
-  hora_apertura       DateTime? @db.Timestamptz(6)
-  hora_cierre         DateTime? @db.Timestamptz(6)
+  hora_apertura       DateTime @db.Timestamptz(6)
+  hora_cierre         DateTime @db.Timestamptz(6)
   dia_semana          DateTime? @db.Date
 
-  @@index([id_tienda], map: "HorarioAbierto_idTienda_idx")
+  tienda TiendaFisica @relation(fields: [id_tienda], references: [id_tienda], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Producto {
   id_producto     BigInt   @id @default(autoincrement())
-  nombre          Decimal? @db.Decimal
-  tipo            String?
-  precio_de_lista Decimal? @db.Decimal
-  sub_producto    String?
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  nombre          String
+  id_tipo            BigInt
+  id_autor BigInt
+  precio_de_lista Decimal @db.Decimal
   descripcion     String?
+
+  autor Comercio @relation(references: [id_comercio], fields: [id_autor], onDelete: NoAction, onUpdate: NoAction)
+  tipo Tipo @relation(references: [id_tipo], fields: [id_tipo], onDelete: NoAction, onUpdate: NoAction)
+  generos GeneroProducto[]
+  stock_en_tiendas Stock[]
+  reviews ReviewProducto[]
+}
+
+model Tipo {
+  id_tipo BigInt @id @default(autoincrement())
+  nombre String
+
+  productos Producto[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Regiones {
-  id_region BigInt  @id @default(autoincrement())
-  region    String?
+model Genero {
+  id_genero BigInt @id @default(autoincrement())
+  nombre    String
+
+  productos GeneroProducto[]
+  interesados UsuarioPreferencias[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model GeneroProducto {
+  id_genero_producto BigInt  @id @default(autoincrement())
+  id_producto        BigInt
+  id_genero          BigInt
+
+  producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+  genero Genero @relation(fields: [id_genero], references: [id_genero], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Stock {
   id_registro_stock BigInt  @id @default(autoincrement())
   id_producto       BigInt
-  id_tienda         BigInt?
-  stock             BigInt?
+  id_tienda         BigInt
+  stock             BigInt
 
-  @@index([id_producto], map: "Stock_idProducto_idx")
-  @@index([id_tienda], map: "Stock_idTienda_idx")
+  tienda TiendaFisica @relation(fields: [id_tienda], references: [id_tienda], onDelete: NoAction, onUpdate: NoAction)
+  producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model TiendaFisica {
-  id_tienda      BigInt  @id @default(autoincrement())
-  id_comerciante BigInt
-  nombre         String?
-  dpto           String?
-  calle          String?
-  altura         String?
-  id_region      BigInt?
+model ReviewProducto {
+  id_review    BigInt   @id @default(autoincrement())
+  fecha_posteo DateTime @default(now()) @db.Timestamp(6)
+  id_usuario   BigInt
+  id_producto  BigInt
+  texto_review String?
+  puntuacion   Int
 
-  @@index([id_comerciante], map: "TiendaFisica_IdComerciante_idx")
-  @@index([id_region], map: "TiendaFisica_IdRegion_idx")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Usuario {
-  id_usuario BigInt  @id @default(autoincrement())
-  id_cuenta  BigInt
-  nombre     String?
-  apellido   String?
-  id_region  BigInt?
-
-  @@index([id_cuenta], map: "Usuario_idCuenta_idx")
-  @@index([id_region], map: "Usuario_idRegion_idx")
-  @@index([id_region], map: "Usuario_idRegion_idx1")
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+  moderado_por LogModeracionReview[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model UsuarioPreferencias {
   id_registro_preferencias BigInt  @id @default(autoincrement())
   id_usuario               BigInt
-  id_genero                BigInt?
+  id_genero                BigInt
 
-  @@index([id_genero], map: "UsuarioPreferencias_idGenero_idx")
-  @@index([id_usuario], map: "UsuarioPreferencias_idUsuario_idx")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model LogModeracion {
-  id_log_mod BigInt @id(map: "LodModeracion_pkey") @default(autoincrement())
-  id_admin   BigInt
-
-  @@index([id_admin], map: "LodModeracion_idAdmin_idx")
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  genero Genero @relation(fields: [id_genero], references: [id_genero], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model LogModeracionReview {
-  id_log_mod_review BigInt  @id(map: "LodModeracionRes_pkey") @default(autoincrement())
-  id_log_mod        BigInt
-  id_review         BigInt?
-  motivo_moderacion String?
+  id_logmod_review BigInt  @id @default(autoincrement())
+  fecha_mod DateTime @default(now()) @db.Timestamp(6)
+  id_moderador BigInt
+  id_review         BigInt
+  motivo_moderacion String
 
-  @@index([id_log_mod], map: "LodModeracionRes_IdLogMod_idx")
-  @@index([id_review], map: "LodModeracionRes_IdReseña_idx")
+  moderador Usuario @relation(fields: [id_moderador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  review ReviewProducto @relation(fields: [id_review], references: [id_review], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model ReviewProducto {
-  id_review    BigInt   @id(map: "ReseñaProducto_pkey") @default(autoincrement())
-  id_usuario   BigInt   @default(autoincrement())
-  id_producto  BigInt   @default(autoincrement())
-  texto_review String?
-  puntuacion   Decimal? @db.Decimal
+model Region {
+  id_region BigInt  @id @default(autoincrement())
+  nombre    String
 
-  @@index([id_producto], map: "ReseñaProducto_idProducto_idx")
-  @@index([id_usuario], map: "ReseñaProducto_idUsuario_idx")
+  usuarios Usuario[]
+  tiendas TiendaFisica[]
 }
