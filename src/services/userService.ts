@@ -31,7 +31,20 @@ export class UserService {
         }
     }
 
-    async createUser() {
-        // wip
+    async createUser(email: string, nombres: string, apellidos: string) {
+        try {
+            const user = await db.usuario.create({
+                data: {
+                    email: email,
+                    nombres: nombres,
+                    apellidos: apellidos,
+                }
+            })
+
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error al crear usuario. Mira los logs para más información.`)
+        }
     }
 }
