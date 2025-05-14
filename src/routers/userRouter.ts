@@ -11,7 +11,7 @@ userRouter.get('/', async (_, res) => {
         const users = await userService.getAllUsers();
         res.status(200).json({ ok: true, data: users })
     } catch (error) {
-        res.status(500).json({ ok: false, error: (error as any).message })
+        res.status(404).json({ ok: false, error: (error as any).message })
     }
 })
 

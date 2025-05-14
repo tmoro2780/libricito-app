@@ -5,6 +5,10 @@ export class UserService {
         try {
             const users = await db.usuario.findMany();
 
+            //const usersSerialized = JSON.stringify(users, (_, value) => {
+            //    return typeof value === 'bigint' ? value.toString() : value;
+            //});
+
             return users;
         } catch (error) {
             console.error(error);
@@ -25,5 +29,9 @@ export class UserService {
             console.error(error);
             throw new Error(`Error al obtener usuario con id ${userId}. Mira los logs para más información.`)
         }
+    }
+
+    async createUser() {
+        // wip
     }
 }
