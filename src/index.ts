@@ -5,9 +5,9 @@ import { productRouter } from './routers/productRouter';
 const app = express();
 const port = 8000;
 
+app.use(express.json());
 app.use('/users', userRouter);
 app.use('/products', productRouter);
-app.use(express.json());
 
 app.get('/', (_: Request, res: Response) => {
     res.status(200).json({

@@ -13,7 +13,8 @@ datasource db {
 model Usuario {
   id_usuario Int  @id @default(autoincrement())
   fecha_alta DateTime @default(now()) @db.Timestamp(6)
-  email   String
+  email   String @unique
+  clave String
   verificado Boolean @default(false)
   moderador Boolean @default(false)
   nombres     String
@@ -21,6 +22,7 @@ model Usuario {
   id_region  Int?
 
   comercios UsuariosComercio[]
+  comercios_propios Comercio[]
   region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
   intereses UsuarioPreferencias[]
   reviews_realizadas ReviewProducto[]
@@ -31,7 +33,9 @@ model Comercio {
   id_comercio Int @id @default(autoincrement())
   fecha_alta DateTime @default(now()) @db.Timestamp(6)
   nombre String
+  id_propietario Int
 
+  propietario Usuario @relation(fields: [id_propietario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
   vendedores UsuariosComercio[]
   tiendas TiendaFisica[]
   productos_creados Producto[]
