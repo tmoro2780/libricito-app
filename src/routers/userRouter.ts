@@ -17,7 +17,7 @@ userRouter.get('/', async (_, res) => {
 
 userRouter.get('/u/:id', async (req, res) => {
     try {
-        const userIdToGet = req.params.id;
+        const userIdToGet = parseInt(req.params.id);
         const user = await userService.getUserById(userIdToGet);
         res.status(200).json({ ok: true, data: user })
     } catch (error) {
@@ -40,10 +40,37 @@ userRouter.post('/signup', async (req, res) => {
 
 userRouter.post('/login', async (req, res) => {
     try {
+        if (req.session.user) {
+            res.status(401).json({ ok: false, error: "Ya inició sesión" });
+            return;
+        }
+
         const email = req.body.email;
         const clave = req.body.clave;
-        const test_value = await userService.loginUser(email, clave);
-        res.status(200).json({ ok: true, data: test_value })
+        const match = await userService.loginUser(email, clave);
+
+        if (match) {
+            req.session.user = {
+                id: match.id,
+                email: match.email
+            }
+            res.status(200).json({ ok: true, data: match })
+        } else {
+            res.status(401).json({ ok: false, error: "Credenciales incorrectas" })
+        }
+    } catch (error) {
+        res.status(500).json({ ok: false, error: (error as any).message })
+    }
+})
+
+userRouter.post('/logout', async (req, res) => {
+    try {
+        if (!req.session.user) {
+            res.status(401).json({ ok: false, error: "No inició sesión" });
+            return;
+        }
+
+        req.session.destroy((_) => { res.status(200).json({ ok: true }); });
     } catch (error) {
         res.status(500).json({ ok: false, error: (error as any).message })
     }

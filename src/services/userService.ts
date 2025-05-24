@@ -1,6 +1,11 @@
+import dotenv from 'dotenv';
 import { compare, genSaltSync, hashSync } from "bcrypt-ts";
+import jwt from "jsonwebtoken";
+
 
 import { db } from "../config/db/db";
+
+dotenv.config();
 
 export class UserService {
     async getAllUsers() {
@@ -14,11 +19,11 @@ export class UserService {
         }
     }
 
-    async getUserById(userId: string) {
+    async getUserById(userId: number) {
         try {
             const user = await db.usuario.findUniqueOrThrow({
                 where: {
-                    id_usuario: parseInt(userId)
+                    id_usuario: userId
                 }
             })
 
@@ -69,8 +74,11 @@ export class UserService {
     async loginUser(email: string, clave: string) {
         const user = await this.getUserByEmail(email);
         const clave_hash: string = user.clave;
+        const user_id: number = user.id_usuario
 
         const passwordsMatch = await compare(clave, clave_hash);
-        return passwordsMatch;
+        if (passwordsMatch) {
+            return { id: user_id, email: email }
+        }
     }
 }

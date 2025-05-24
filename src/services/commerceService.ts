@@ -1,4 +1,7 @@
 import { db } from "../config/db/db";
+import { UserService } from "./userService";
+
+const userService = new UserService();
 
 export class CommerceService {
     async getAllCommerces() {
@@ -27,17 +30,28 @@ export class CommerceService {
         }
     }
 
-    async createCommerce(nombre: string, idPropietario: string) {
+    async createCommerce(nombre: string, idPropietario: number) {
         try {
+            const existing = await db.comercio.findFirst({
+                where: {
+                    id_propietario: idPropietario,
+                    nombre: nombre
+                }
+            })
+
+            if (existing) {
+                throw new Error(`El usuario ya tiene un comercio con el mismo nombre.`)
+            }
+
             const commerce = await db.comercio.create({
                 data: {
                     nombre: nombre,
-                    id_propietario: parseInt(idPropietario),
+                    id_propietario: idPropietario,
                 }
             })
             await db.usuariosComercio.create({
                 data: {
-                    id_usuario: parseInt(idPropietario),
+                    id_usuario: idPropietario,
                     id_comercio: commerce.id_comercio,
                 }
             })
