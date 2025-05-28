@@ -1,12 +1,20 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import { Navegador } from './components/navbar.js';
+import { Navegador } from './components/navbar';
+import { Footer } from './components/footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div className="App">
-        <Navegador />
-    </div>
+    <>
+      <Navegador />
+      {/* Aquí puedes renderizar el resto del contenido de tu página */}
+      <div style={{ marginTop: '80px' }} className="container">
+        <h1>Bienvenido a Libricito</h1>
+        <p>Explora libros y locales cerca de ti.</p>
+      </div>
+      <Footer />
+    </>
   );
 }
 
