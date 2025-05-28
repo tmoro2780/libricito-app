@@ -4,7 +4,9 @@ import { UserService } from "./userService";
 const userService = new UserService();
 
 export class CommerceService {
+    // Servicio de gestión de comercios en la base de datos
     async getAllCommerces() {
+        // Obtener todos los comercios de la base de datos
         try {
             const comercios = await db.comercio.findMany();
 
@@ -16,6 +18,7 @@ export class CommerceService {
     }
 
     async getCommerceById(commerceId: string) {
+        // Obtener un comercio de la base de datos por su id
         try {
             const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
@@ -31,6 +34,7 @@ export class CommerceService {
     }
 
     async createCommerce(nombre: string, idPropietario: number) {
+        // Crear un comercio en la base de datos
         try {
             const existing = await db.comercio.findFirst({
                 where: {

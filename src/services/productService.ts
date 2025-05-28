@@ -1,7 +1,9 @@
 import { db } from "../config/db/db";
 
 export class ProductService {
+    // Servicio de gestión de productos en la base de datos
     async getAllProducts() {
+        // Obtener todos los productos de la base de datos
         try {
             const productos = await db.producto.findMany();
 
@@ -13,6 +15,7 @@ export class ProductService {
     }
 
     async getProductById(productId: string) {
+        // Obtener un producto de la base de datos por su id
         try {
             const product = await db.producto.findUniqueOrThrow({
                 where: {

@@ -8,7 +8,10 @@ import { db } from "../config/db/db";
 dotenv.config();
 
 export class UserService {
+    // Servicio de gestion de usuarios en la base de datos
+
     async getAllUsers() {
+        // Obtener todos los usuarios de la base de datos
         try {
             const users = await db.usuario.findMany();
 
@@ -20,6 +23,7 @@ export class UserService {
     }
 
     async getUserById(userId: number) {
+        // Obtener un usuario de la base de datos por su id
         try {
             const user = await db.usuario.findUniqueOrThrow({
                 where: {
@@ -35,6 +39,7 @@ export class UserService {
     }
 
     async getUserByEmail(email: string) {
+        // Obtener un usuario de la base de datos por su e-mail
         try {
             const user = await db.usuario.findFirstOrThrow({
                 where: {
@@ -50,6 +55,7 @@ export class UserService {
     }
 
     async createUser(email: string, nombres: string, apellidos: string, clave: string) {
+        // Crear un usuario en la base de datos
         const salt = genSaltSync(10);
         const clave_hash = hashSync(clave, salt);
 
@@ -72,6 +78,7 @@ export class UserService {
     }
 
     async loginUser(email: string, clave: string) {
+        // Verificar si un usuario existe y si su clave es correcta
         const user = await this.getUserByEmail(email);
         const clave_hash: string = user.clave;
         const user_id: number = user.id_usuario
