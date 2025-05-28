@@ -7,6 +7,7 @@ const productService = new ProductService();
 export const productRouter = Router()
 
 productRouter.get('/', async (_, res) => {
+    // Obtener todos los productos de la base de datos
     try {
         const users = await productService.getAllProducts();
         res.status(200).json({ ok: true, data: users })
@@ -16,6 +17,7 @@ productRouter.get('/', async (_, res) => {
 })
 
 productRouter.get('/u/:id', async (req, res) => {
+    // Obtener un producto de la base de datos por su id
     try {
         const productIdToGet = req.params.id;
         const product = await productService.getProductById(productIdToGet);

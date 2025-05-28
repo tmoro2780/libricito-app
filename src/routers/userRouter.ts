@@ -7,6 +7,7 @@ const userService = new UserService();
 export const userRouter = Router()
 
 userRouter.get('/', async (_, res) => {
+    // Obtener todos los usuarios de la base de datos
     try {
         const users = await userService.getAllUsers();
         res.status(200).json({ ok: true, data: users })
@@ -16,6 +17,7 @@ userRouter.get('/', async (_, res) => {
 })
 
 userRouter.get('/u/:id', async (req, res) => {
+    // Obtener un usuario de la base de datos por su id
     try {
         const userIdToGet = parseInt(req.params.id);
         const user = await userService.getUserById(userIdToGet);
@@ -26,6 +28,7 @@ userRouter.get('/u/:id', async (req, res) => {
 })
 
 userRouter.post('/signup', async (req, res) => {
+    // Crear un usuario en la base de datos
     try {
         const email = req.body.email;
         const nombres = req.body.nombres;
@@ -39,6 +42,7 @@ userRouter.post('/signup', async (req, res) => {
 })
 
 userRouter.post('/login', async (req, res) => {
+    // Verificar si un usuario existe y si su clave es correcta y, en dicho caso, iniciar sesión
     try {
         if (req.session.user) {
             res.status(401).json({ ok: false, error: "Ya inició sesión" });
@@ -64,6 +68,7 @@ userRouter.post('/login', async (req, res) => {
 })
 
 userRouter.post('/logout', async (req, res) => {
+    // Cerrar sesión
     try {
         if (!req.session.user) {
             res.status(401).json({ ok: false, error: "No inició sesión" });

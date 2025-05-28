@@ -7,6 +7,7 @@ const commerceService = new CommerceService();
 export const commerceRouter = Router()
 
 commerceRouter.get('/', async (_, res) => {
+    // Obtener todos los comercios de la base de datos
     try {
         const commerces = await commerceService.getAllCommerces();
         res.status(200).json({ ok: true, data: commerces })
@@ -16,6 +17,7 @@ commerceRouter.get('/', async (_, res) => {
 })
 
 commerceRouter.get('/u/:id', async (req, res) => {
+    // Obtener un comercio de la base de datos por su id
     try {
         const commerceIdToGet = req.params.id;
         const commerce = await commerceService.getCommerceById(commerceIdToGet);
@@ -26,6 +28,7 @@ commerceRouter.get('/u/:id', async (req, res) => {
 })
 
 commerceRouter.post('/create', async (req, res) => {
+    // Crear un comercio en la base de datos
     try {
         if (!req.session.user) {
             res.status(401).json({ ok: false, error: "No inició sesión" })
