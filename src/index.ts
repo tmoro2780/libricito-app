@@ -7,13 +7,13 @@ import { productRouter } from './routers/productRouter';
 interface User {
     id: number;
     email: string;
-}
+};
 
 declare module 'express-session' {
     interface SessionData {
         user: User;
     }
-}
+};
 
 const app = express();
 const port = 8000;

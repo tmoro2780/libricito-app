@@ -1,7 +1,9 @@
 import { Router } from "express"
 
+import { SessionCheck } from "../middleware/sessionCheck";
 import { UserService } from "../services/userService"
 
+const sessionCheck = new SessionCheck();
 const userService = new UserService();
 
 export const userRouter = Router()
@@ -41,14 +43,8 @@ userRouter.post('/signup', async (req, res) => {
     }
 })
 
-userRouter.post('/login', async (req, res) => {
-    // Verificar si un usuario existe y si su clave es correcta y, en dicho caso, iniciar sesión
+userRouter.post('/login', sessionCheck.allowIfUserIsUnlogged, async (req, res) => {
     try {
-        if (req.session.user) {
-            res.status(401).json({ ok: false, error: "Ya inició sesión" });
-            return;
-        }
-
         const email = req.body.email;
         const clave = req.body.clave;
         const match = await userService.loginUser(email, clave);
@@ -67,14 +63,8 @@ userRouter.post('/login', async (req, res) => {
     }
 })
 
-userRouter.post('/logout', async (req, res) => {
-    // Cerrar sesión
+userRouter.post('/logout', sessionCheck.allowIfUserIsLogged,async (req, res) => {
     try {
-        if (!req.session.user) {
-            res.status(401).json({ ok: false, error: "No inició sesión" });
-            return;
-        }
-
         req.session.destroy((_) => { res.status(200).json({ ok: true }); });
     } catch (error) {
         res.status(500).json({ ok: false, error: (error as any).message })

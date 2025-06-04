@@ -1,10 +1,12 @@
 import { Router } from "express"
 
+import { SessionCheck } from "../middleware/sessionCheck";
 import { CommerceService } from "../services/commerceService"
 
+const sessionCheck = new SessionCheck();
 const commerceService = new CommerceService();
 
-export const commerceRouter = Router()
+export const commerceRouter = Router();
 
 commerceRouter.get('/', async (_, res) => {
     // Obtener todos los comercios de la base de datos
@@ -27,16 +29,10 @@ commerceRouter.get('/u/:id', async (req, res) => {
     }
 })
 
-commerceRouter.post('/create', async (req, res) => {
-    // Crear un comercio en la base de datos
+commerceRouter.post('/crear', sessionCheck.allowIfUserIsLogged, async (req, res) => {
     try {
-        if (!req.session.user) {
-            res.status(401).json({ ok: false, error: "No inició sesión" })
-            return;
-        }
-
-        const nombre = req.body.nombre;;
-        const id_propietario = req.session.user.id;
+        const nombre = req.body.nombre;
+        const id_propietario = req.session.user?.id as number;
 
         const commerce = await commerceService.createCommerce(nombre, id_propietario);
         res.status(200).json({ ok: true, data: commerce })
