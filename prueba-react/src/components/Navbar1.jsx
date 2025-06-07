@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button, NavDropdown } from 'react-bootstrap';
-
-export const Navegador = () => {
+import { Link } from  'react-router-dom'
+export const Navegador1 = () => {
     return (
     <Navbar
         bg="white"
