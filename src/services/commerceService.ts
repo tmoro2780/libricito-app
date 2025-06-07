@@ -1,8 +1,6 @@
 import { db } from "../config/db/db";
 import { UserService } from "./userService";
 
-const userService = new UserService();
-
 export class CommerceService {
     // Servicio de gestión de comercios en la base de datos
     async getAllCommerces() {
@@ -17,12 +15,12 @@ export class CommerceService {
         }
     }
 
-    async getCommerceById(commerceId: string) {
+    async getCommerceById(commerceId: number) {
         // Obtener un comercio de la base de datos por su id
         try {
-            const comercio = await db.comercio.findUniqueOrThrow({
+            const comercio = await db.comercio.findUnique({
                 where: {
-                    id_comercio: parseInt(commerceId)
+                    id_comercio: commerceId
                 }
             })
 
@@ -64,6 +62,75 @@ export class CommerceService {
         } catch (error) {
             console.error(error);
             throw new Error(`Error al crear comercio. Mira los logs para más información.`)
+        }
+    }
+
+    async addUserToCommerce(idUsuario: number, idComercio: number) {
+        // Añadir un usuario a un comercio por sus IDs.
+        try {
+            await db.comercio.findUniqueOrThrow({
+                where: {
+                    id_comercio: idComercio
+                }
+            });
+            const usuario = await db.usuario.findUniqueOrThrow({
+                where: {
+                    id_usuario: idUsuario
+                }
+            });
+
+            if (!usuario.verificado) {
+                throw new Error('El usuario no está verificado.')
+            }
+
+            const user_in_commerce = await db.usuariosComercio.create({
+                data: {
+                    id_comercio: idComercio,
+                    id_usuario: idUsuario
+                }
+            });
+
+            return user_in_commerce;
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error al añadir usuario al comercio. Mira los logs para más información.`)
+        }
+    }
+
+    async deleteUserFromCommerce(idUsuario: number, idComercio: number) { //WIP
+        // Eliminar un usuario de un comercio por su ID
+        try {
+            await db.comercio.findUniqueOrThrow({
+                where: {
+                    id_comercio: idComercio
+                }
+            });
+            await db.usuario.findUniqueOrThrow({
+                where: {
+                    id_usuario: idUsuario
+                }
+            });
+
+            const user_in_commerce = await db.usuariosComercio.findFirstOrThrow({
+                where: {
+                    id_comercio: idComercio,
+                    id_usuario: idUsuario
+                }
+            })
+            const id_user_in_commerce = user_in_commerce.id_usuario_comercio;
+
+            await db.usuariosComercio.delete({
+                where: {
+                    id_usuario_comercio: id_user_in_commerce
+                }
+            });
+
+            return user_in_commerce;
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error al eliminar usuario del comercio. Mira los logs para más información.`)
         }
     }
 }

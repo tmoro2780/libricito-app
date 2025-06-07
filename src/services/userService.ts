@@ -25,11 +25,11 @@ export class UserService {
     async getUserById(userId: number) {
         // Obtener un usuario de la base de datos por su id
         try {
-            const user = await db.usuario.findUniqueOrThrow({
+            const user = await db.usuario.findUnique({
                 where: {
                     id_usuario: userId
                 }
-            })
+            });
 
             return user;
         } catch (error) {
@@ -41,7 +41,7 @@ export class UserService {
     async getUserByEmail(email: string) {
         // Obtener un usuario de la base de datos por su e-mail
         try {
-            const user = await db.usuario.findFirstOrThrow({
+            const user = await db.usuario.findFirst({
                 where: {
                     email: email
                 }
@@ -79,13 +79,23 @@ export class UserService {
 
     async loginUser(email: string, clave: string) {
         // Verificar si un usuario existe y si su clave es correcta
-        const user = await this.getUserByEmail(email);
-        const clave_hash: string = user.clave;
-        const user_id: number = user.id_usuario
+        try {
+            const user = await db.usuario.findFirstOrThrow({
+                where: {
+                    email: email
+                }
+            });
 
-        const passwordsMatch = await compare(clave, clave_hash);
-        if (passwordsMatch) {
-            return { id: user_id, email: email }
+            const clave_hash: string = user.clave;
+            const user_id: number = user.id_usuario
+
+            const passwordsMatch = await compare(clave, clave_hash);
+            if (passwordsMatch) {
+                return { id: user_id, email: email }
+            }
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error al validar credenciales. Mira los logs para más información.`)
         }
     }
 }

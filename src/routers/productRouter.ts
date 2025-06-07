@@ -21,8 +21,14 @@ productRouter.get('/u/:id', async (req, res) => {
     try {
         const productIdToGet = req.params.id;
         const product = await productService.getProductById(productIdToGet);
+
+        if (!product) {
+            res.status(404).json({ ok: false, error: 'No se encontró el producto' });
+            return;
+        }
+
         res.status(200).json({ ok: true, data: product })
     } catch (error) {
-        res.status(404).json({ ok: false, error: (error as any).message })
+        res.status(500).json({ ok: false, error: (error as any).message })
     }
 })

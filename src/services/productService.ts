@@ -17,7 +17,7 @@ export class ProductService {
     async getProductById(productId: string) {
         // Obtener un producto de la base de datos por su id
         try {
-            const product = await db.producto.findUniqueOrThrow({
+            const product = await db.producto.findUnique({
                 where: {
                     id_producto: parseInt(productId)
                 }
