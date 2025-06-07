@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './HomePage.module.css'; // Importa los estilos CSS Modules
+import styles from './Home.module.css'; // Importa los estilos CSS Modules
 
 import {Navegador} from '../components/Navbar.jsx'; 
 import {Footer} from '../components/Footer.jsx';
 
-function HomePage() {
+function Home() {
   return (
     <>
       <Navegador />
@@ -18,5 +18,3 @@ function HomePage() {
     </>
   );
 }
-
-export default HomePage;
