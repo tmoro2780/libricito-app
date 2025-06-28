@@ -37,7 +37,7 @@ export const Navegador1 = () => {
                 <Nav.Link as={Link} to="/buscar/libros" className="text-dark rounded-pill me-2">
                 Libros
                 </Nav.Link>
-                <Nav.Link as={Link} to="/locales" className="text-dark rounded-pill me-2">
+                <Nav.Link as={Link} to="/buscar/locales" className="text-dark rounded-pill me-2">
                 Locales
                 </Nav.Link>
                 <Nav.Link as={Link} to="/about" className="text-dark rounded-pill">
