@@ -9,7 +9,7 @@ import { Locales } from './pages/Locales/Locales.jsx'
 import { Libro } from './pages/Libros/Libro.jsx'
 import { Libros } from './pages/Libros/Libros.jsx'
 import { BuscarLocales } from './pages/Buscar/BuscarLocales.jsx'
-import { BuscarLibros } from './pages/Buscar/BuscarLibros.jsx'
+import { BuscarLibros } from './pages/Buscar/BuscarLibros.jsx';
 import { Contacto } from './pages/Contacto.jsx'
 import { Login } from './pages/Auth/Login.jsx'
 import { Signup } from './pages/Auth/Sigup.jsx'

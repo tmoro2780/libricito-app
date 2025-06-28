@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import imagenLibreria from '../public-img/imagen-libreria.jpg';
 
 export const Footer = () => {
   return (
@@ -6,16 +8,17 @@ export const Footer = () => {
       <div className="container-fluid">
         <div className="row py-4 justify-content-center text-center text-md-start g-4">
 
+          {/* Logo y descripción */}
           <div className="col-12 col-md-3">
-            <a className="d-inline-block mb-3" href="#">
+            <Link to="/" className="d-inline-block mb-3 text-decoration-none">
               <img
-                src="../source/img/imagen-libreria.jpg"
+                src={imagenLibreria}
                 alt="Logo Libricito"
                 style={{ height: '60px', width: '60px', objectFit: 'cover' }}
                 className="rounded-circle mb-2"
               />
               <span className="fw-bold fs-4 text-dark d-block">Libricito</span>
-            </a>
+            </Link>
             <p className="text-muted small mb-3">
               Tu página web favorita para buscar tus libros y conectar con librerías cercanas.
             </p>
@@ -23,6 +26,7 @@ export const Footer = () => {
             <h5 className="fw-normal text-muted small">Desarrollado por Inteligencia Muruchi.</h5>
           </div>
 
+          {/* Contacto */}
           <div className="col-12 col-md-3">
             <h5 className="fw-bold mb-3">Contacto</h5>
             <ul className="list-unstyled mb-0">
@@ -53,46 +57,28 @@ export const Footer = () => {
             </ul>
           </div>
 
+          {/* Enlaces útiles */}
           <div className="col-12 col-md-2">
             <h5 className="fw-bold mb-3">Explorar</h5>
             <ul className="list-unstyled mb-0">
-              <li className="mb-2">
-                <a href="#" className="text-decoration-none text-dark">
-                  Sobre nosotros
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="#" className="text-decoration-none text-dark">
-                  Contáctanos
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="#" className="text-decoration-none text-dark">
-                  Ayuda
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="#" className="text-decoration-none text-dark">
-                  Servicios
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="#" className="text-decoration-none text-dark">
-                  Preguntas Frecuentes
-                </a>
-              </li>
+              <li className="mb-2"><Link to="/nosotros" className="text-decoration-none text-dark">Sobre nosotros</Link></li>
+              <li className="mb-2"><Link to="/contacto" className="text-decoration-none text-dark">Contáctanos</Link></li>
+              <li className="mb-2"><Link to="/ayuda" className="text-decoration-none text-dark">Ayuda</Link></li>
+              <li className="mb-2"><Link to="/servicios" className="text-decoration-none text-dark">Servicios</Link></li>
+              <li className="mb-2"><Link to="/faq" className="text-decoration-none text-dark">Preguntas Frecuentes</Link></li>
             </ul>
           </div>
 
+          {/* Redes sociales */}
           <div className="col-12 col-md-2">
             <h5 className="fw-bold mb-3">Síguenos</h5>
             <ul className="list-unstyled d-flex justify-content-center justify-content-md-start gap-3 mb-0">
-              {['Facebook', 'Instagram', 'Twitter', 'LinkedIn'].map((name, i) => (
-                <li key={i}>
-                  <a href="#" className="d-block" aria-label={name}>
+              {[ 'Facebook', 'Instagram', 'Twitter', 'LinkedIn' ].map((red, index) => (
+                <li key={index}>
+                  <a href="#" className="d-block">
                     <img
-                      src="../source/img/imagen-libreria.jpg"
-                      alt={name}
+                      src={imagenLibreria}
+                      alt={red}
                       className="rounded-circle img-fluid"
                       style={{ width: '40px', height: '40px', objectFit: 'cover' }}
                     />
@@ -107,4 +93,3 @@ export const Footer = () => {
     </footer>
   );
 };
-export default Footer

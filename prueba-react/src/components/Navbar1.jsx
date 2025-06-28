@@ -1,54 +1,74 @@
 import React from 'react';
-import { Navbar, Nav, Container, Button, NavDropdown } from 'react-bootstrap';
-import { Link } from  'react-router-dom'
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import bookIcon from '../public-img/iconos/book.ico'; // Asegurate de que exista
+
 export const Navegador1 = () => {
     return (
     <Navbar
-        bg="white"
-        expand="md"
-        fixed="top"
-        style={{ backgroundColor: 'rgb(255, 231, 228)' }}
-        className="shadow-sm"
+    bg="white"
+    expand="md"
+    fixed="top"
+    style={{ backgroundColor: 'rgb(255, 231, 228)' }}
+    className="shadow-sm"
     >
         <Container>
-        <Navbar.Brand href="index.html" className="text-dark fw-bold">Libricito</Navbar.Brand>
+            {/* Marca / Logo */}
+            <Navbar.Brand as={Link} to="/" className="text-dark fw-bold d-flex align-items-center">
+            <img
+                src={bookIcon}
+                alt="Logo Libricito"
+                width="30"
+                height="30"
+                className="d-inline-block align-text-top me-2"
+                style={{ objectFit: 'contain' }}
+            />
+            Libricito
+            </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
+            {/* Botón hamburguesa */}
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+            {/* Menú colapsable */}
+            <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
+            
+            {/* Navegación principal */}
             <Nav className="fw-semibold">
-            <Nav.Link href="busqueda-libros.html" className="text-dark rounded-pill me-2">
+                <Nav.Link as={Link} to="/buscar/libros" className="text-dark rounded-pill me-2">
                 Libros
-            </Nav.Link>
-            <Nav.Link href="busqueda-local.html" className="text-dark rounded-pill me-2">
+                </Nav.Link>
+                <Nav.Link as={Link} to="/locales" className="text-dark rounded-pill me-2">
                 Locales
-            </Nav.Link>
-            <Nav.Link href="about.html" className="text-dark rounded-pill">
+                </Nav.Link>
+                <Nav.Link as={Link} to="/about" className="text-dark rounded-pill">
                 About
-            </Nav.Link>
+                </Nav.Link>
             </Nav>
 
+            {/* Botones sesión */}
             <Nav className="fw-semibold">
-            <Nav.Link href="login.html" className="me-2 p-0">
+                <Nav.Link as={Link} to="/inicio-sesion" className="me-2 p-0">
                 <Button
-                variant="light"
-                className="rounded-pill fw-semibold"
-                style={{ backgroundColor: 'bisque' }}
+                    variant="light"
+                    className="rounded-pill fw-semibold"
+                    style={{ backgroundColor: 'bisque' }}
                 >
-                Iniciar Sesión
+                    Iniciar Sesión
                 </Button>
-            </Nav.Link>
-            <Nav.Link href="signup.html" className="p-0">
+                </Nav.Link>
+                <Nav.Link as={Link} to="/registro" className="p-0">
                 <Button
-                variant="light"
-                className="rounded-pill fw-semibold"
-                style={{ backgroundColor: 'rgb(255, 179, 179)' }}
+                    variant="light"
+                    className="rounded-pill fw-semibold"
+                    style={{ backgroundColor: 'rgb(255, 179, 179)' }}
                 >
-                Registrarse
+                    Registrarse
                 </Button>
-            </Nav.Link>
+                </Nav.Link>
             </Nav>
-        </Navbar.Collapse>
+
+            </Navbar.Collapse>
         </Container>
     </Navbar>
-    );
+  );
 };
