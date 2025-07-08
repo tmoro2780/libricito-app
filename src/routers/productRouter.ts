@@ -16,7 +16,7 @@ productRouter.get('/', async (_, res) => {
     }
 })
 
-productRouter.get('/u/:id', async (req, res) => {
+productRouter.get('/:id', async (req, res) => {
     // Obtener un producto de la base de datos por su id
     try {
         const productIdToGet = req.params.id;
@@ -31,4 +31,5 @@ productRouter.get('/u/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ ok: false, error: (error as any).message })
     }
-})
+}
+)

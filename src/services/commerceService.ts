@@ -133,4 +133,5 @@ export class CommerceService {
             throw new Error(`Error al eliminar usuario del comercio. Mira los logs para más información.`)
         }
     }
+    
 }
