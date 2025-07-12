@@ -65,7 +65,7 @@ de dato. Aquellos listados con un + al principio son obligatorios.
 app.get('/', (_: Request, res: Response) => {
     res.status(200).json({
         "ok": true,
-        "msg": "Bienvenidos a libricito"
+        "msg": "Te damos la bienvenida a Libricito"
     });
 });
 

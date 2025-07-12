@@ -81,11 +81,11 @@ model Producto {
   fecha_alta DateTime @default(now()) @db.Timestamp(6)
   nombre          String
   id_tipo            Int
-  id_autor Int
+  id_propietario Int
   precio_de_lista Decimal @db.Decimal
   descripcion     String?
 
-  autor Comercio @relation(references: [id_comercio], fields: [id_autor], onDelete: NoAction, onUpdate: NoAction)
+  autor Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: NoAction, onUpdate: NoAction)
   tipo Tipo @relation(references: [id_tipo], fields: [id_tipo], onDelete: NoAction, onUpdate: NoAction)
   generos GeneroProducto[]
   stock_en_tiendas Stock[]
