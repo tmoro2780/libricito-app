@@ -79,24 +79,16 @@ model HorarioAbierto {
 model Producto {
   id_producto     Int   @id @default(autoincrement())
   fecha_alta DateTime @default(now()) @db.Timestamp(6)
-  nombre          String
-  id_tipo            Int
-  id_propietario Int
-  precio_de_lista Decimal @db.Decimal
-  descripcion     String?
+  nombre           String
+  autor            String
+  editorial        String
+  precio_de_lista  Decimal @db.Decimal
+  descripcion      String?
 
-  autor Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: NoAction, onUpdate: NoAction)
-  tipo Tipo @relation(references: [id_tipo], fields: [id_tipo], onDelete: NoAction, onUpdate: NoAction)
+  propietario Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: NoAction, onUpdate: NoAction)
   generos GeneroProducto[]
   stock_en_tiendas Stock[]
   reviews ReviewProducto[]
-}
-
-model Tipo {
-  id_tipo Int @id @default(autoincrement())
-  nombre String
-
-  productos Producto[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -140,7 +132,20 @@ model ReviewProducto {
 
   usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
   producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
-  moderado_por LogModeracionReview[]
+  moderado_por LogModeracionReviewProd[]
+}
+
+model ReviewComercio {
+  id_review    Int   @id @default(autoincrement())
+  fecha_posteo DateTime @default(now()) @db.Timestamp(6)
+  id_usuario   Int
+  id_comercio  Int
+  texto_review String?
+  puntuacion   Int
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
+  moderado_por LogModeracionReviewCom[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -154,7 +159,7 @@ model UsuarioPreferencias {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model LogModeracionReview {
+model LogModeracionReviewProd {
   id_logmod_review Int  @id @default(autoincrement())
   fecha_mod DateTime @default(now()) @db.Timestamp(6)
   id_moderador Int
@@ -163,6 +168,17 @@ model LogModeracionReview {
 
   moderador Usuario @relation(fields: [id_moderador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
   review ReviewProducto @relation(fields: [id_review], references: [id_review], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model LogModeracionReviewCom {
+  id_logmod_review Int  @id @default(autoincrement())
+  fecha_mod DateTime @default(now()) @db.Timestamp(6)
+  id_moderador Int
+  id_review         Int
+  motivo_moderacion String
+
+  moderador Usuario @relation(fields: [id_moderador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  review ReviewComercio @relation(fields: [id_review], references: [id_review], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
