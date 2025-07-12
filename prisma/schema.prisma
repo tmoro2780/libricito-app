@@ -25,8 +25,10 @@ model Usuario {
   comercios_propios Comercio[]
   region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
   intereses UsuarioPreferencias[]
-  reviews_realizadas ReviewProducto[]
-  moderaciones_realizadas LogModeracionReview[]
+  reviews_producto ReviewProducto[]
+  reviews_comercio ReviewComercio[]
+  moderaciones_review_prod LogModeracionReviewProd[]
+  moderaciones_review_com LogModeracionReviewCom[]
 }
 
 model Comercio {
@@ -38,7 +40,8 @@ model Comercio {
   propietario Usuario @relation(fields: [id_propietario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
   vendedores UsuariosComercio[]
   tiendas TiendaFisica[]
-  productos_creados Producto[]
+  productos Producto[]
+  reviews ReviewComercio[]
 }
 
 model UsuariosComercio {
@@ -61,7 +64,6 @@ model TiendaFisica {
   comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
   region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
   horarios HorarioAbierto[]
-  stock_de_productos Stock[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -82,42 +84,22 @@ model Producto {
   nombre           String
   autor            String
   editorial        String
-  precio_de_lista  Decimal @db.Decimal
   descripcion      String?
+  precio_de_lista  Decimal @db.Decimal
+  id_propietario   Int
+  stock            Int
 
   propietario Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: NoAction, onUpdate: NoAction)
-  generos GeneroProducto[]
-  stock_en_tiendas Stock[]
+  generos TagGeneroProducto[]
   reviews ReviewProducto[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Genero {
-  id_genero Int @id @default(autoincrement())
-  nombre    String
-
-  productos GeneroProducto[]
-  interesados UsuarioPreferencias[]
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model GeneroProducto {
+model TagGeneroProducto {
   id_genero_producto Int  @id @default(autoincrement())
   id_producto        Int
-  id_genero          Int
+  genero             String
 
-  producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
-  genero Genero @relation(fields: [id_genero], references: [id_genero], onDelete: NoAction, onUpdate: NoAction)
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model Stock {
-  id_registro_stock Int  @id @default(autoincrement())
-  id_producto       Int
-  id_tienda         Int
-  stock             Int
-
-  tienda TiendaFisica @relation(fields: [id_tienda], references: [id_tienda], onDelete: NoAction, onUpdate: NoAction)
   producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -152,10 +134,9 @@ model ReviewComercio {
 model UsuarioPreferencias {
   id_registro_preferencias Int  @id @default(autoincrement())
   id_usuario               Int
-  id_genero                Int
+  genero                   String
 
   usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
-  genero Genero @relation(fields: [id_genero], references: [id_genero], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
