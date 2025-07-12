@@ -18,7 +18,7 @@ commerceRouter.get('/', async (_, res) => {
     }
 })
 
-commerceRouter.get('/:id', async (req, res) => {
+commerceRouter.get('/id/:id', async (req, res) => {
     // Obtener un comercio de la base de datos por su ID
     try {
         const commerceIdToGet = parseInt(req.params.id);

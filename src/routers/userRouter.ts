@@ -18,7 +18,7 @@ userRouter.get('/', async (_, res) => {
     }
 })
 
-userRouter.get('/u/:id', async (req, res) => {
+userRouter.get('/id/:id', async (req, res) => {
     // Obtener un usuario de la base de datos por su ID
     try {
         const userIdToGet = parseInt(req.params.id);

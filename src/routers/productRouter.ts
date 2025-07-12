@@ -16,10 +16,10 @@ productRouter.get('/', async (_, res) => {
     }
 })
 
-productRouter.get('/:id', async (req, res) => {
+productRouter.get('/id/:id', async (req, res) => {
     // Obtener un producto de la base de datos por su id
     try {
-        const productIdToGet = req.params.id;
+        const productIdToGet = parseInt(req.params.id);
         const product = await productService.getProductById(productIdToGet);
 
         if (!product) {
