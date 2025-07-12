@@ -98,4 +98,37 @@ export class UserService {
             throw new Error(`Error al validar credenciales. Mira los logs para más información.`)
         }
     }
+
+    async setGenrePreference(id_usuario: number, genero: string) {
+        try {
+            const usuario = await db.usuario.findUnique({
+                where: {
+                    id_usuario: id_usuario
+                }
+            });
+
+            const pref_existente = await db.usuarioPreferencias.findFirst({
+                where: {
+                    id_usuario: id_usuario,
+                    genero: genero
+                }
+            })
+
+            if (pref_existente) {
+                throw new Error("El género otorgado ya está asignado como preferencia del usuario.");
+            }
+
+            await db.usuarioPreferencias.create({
+                data: {
+                    id_usuario: id_usuario,
+                    genero: genero
+                }
+            })
+
+            return usuario;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error al asignar preferencia de usuario. Mira los logs para más información.");
+        }
+    }
 }
