@@ -102,6 +102,17 @@ export class ProductService {
                 }
             });
 
+            const tag_existente = await db.tagGeneroProducto.findFirst({
+                where: {
+                    id_producto: id_producto,
+                    genero: genero
+                }
+            })
+
+            if (tag_existente) {
+                throw new Error("El género otorgado ya está asignado al producto.");
+            }
+
             await db.tagGeneroProducto.create({
                 data: {
                     id_producto: id_producto,
