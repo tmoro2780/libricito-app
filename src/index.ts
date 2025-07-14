@@ -42,9 +42,9 @@ app.use(session({
     cookie: { secure: false } // Set to true in production with HTTPS
 }));
 app.use(express.json());
-app.use('/users', userRouter);
-app.use('/commerces', commerceRouter);
-app.use('/products', productRouter);
+app.use('/usuarios', userRouter);
+app.use('/comercios', commerceRouter);
+app.use('/productos', productRouter);
 
 /*
 
@@ -70,7 +70,7 @@ app.get('/', (_: Request, res: Response) => {
 });
 
 // Request: página no encontrada
-app.get('*not_found', function(_, res: Response){
+app.all('*not_found', function(_, res: Response){
     res.status(404).json({
         "ok": false,
         "msg": "¡No se encontró la página!"
