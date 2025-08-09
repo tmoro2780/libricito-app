@@ -133,5 +133,40 @@ export class CommerceService {
             throw new Error(`Error al eliminar usuario del comercio. Mira los logs para más información.`)
         }
     }
-    
+    //HAY QUE CHEQUEARLO XQ NO ME CONVENCE
+    async deleteCommerce(idCommercio: number, idUsuario: number, verifNombreComercio: string, verifIdComercio: number) {
+        // Eliminar un comercio de la base de datos, atribuido a la cuenta de usuario con sesión iniciada
+        try {
+            // chequear la existencia del comercio
+            const comercio = await db.comercio.findUnique({
+                where: {
+                    id_comercio: idCommercio
+                }
+            })
+
+            // chequear que el usuario sea propietario del comercio
+            if (!idUsuario === comercio.id_propietario) {
+                throw new Error(`El usuario no es propietario del comercio.`)
+            }
+
+            // chequear campos de verificación extra para la eliminación y denegar la operación si no coinciden
+            if (comercio.nombre !== verifNombreComercio || comercio.id_comercio !== verifIdComercio) {
+                throw new Error(`El nombre e ID del comercio no coinciden. Por seguridad, no se eliminará el comercio.`)
+            }
+
+            // eliminar el comercio
+            await db.comercio.delete({
+                where: {
+                    id_comercio: idCommercio
+                }
+            });
+
+            // devolver datos del comercio eliminado
+            return comercio;
+        }
+        catch (error) {
+            console.error(error);
+            throw new Error(`Error al eliminar comercio. Mira los logs para más información.`)
+        }
+    }
 }

@@ -47,3 +47,18 @@ commerceRouter.post('/crear', sessionCheck.allowIfUserIsLogged, async (req, res)
         res.status(500).json({ ok: false, error: (error as any).message })
     }
 })
+
+commerceRouter.post('/id/:id/eliminar', sessionCheck.allowIfUserIsLogged, async (req, res) => {
+    // Eliminar un comercio de la base de datos, atribuido a la cuenta de usuario con sesión iniciada
+    try {
+        const idCommercio = parseInt(req.params.id);
+        const idPropietario = req.session.user?.id as number;
+        const verifNombreComercio = req.body.nombre_comercio;
+        const verifIdComercio = parseInt(req.body.id_comercio);
+
+        const deleted = await commerceService.deleteCommerce(idCommercio, idPropietario, verifNombreComercio, verifIdComercio);
+        res.status(200).json({ ok: true, data: deleted })
+    } catch (error) {
+        res.status(500).json({ ok: false, error: (error as any).message })
+    }
+})
