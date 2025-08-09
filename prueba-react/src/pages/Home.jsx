@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Home.module.css'; // Importa los estilos CSS Modules
 import { Link } from  'react-router-dom'
 import {Navegador1} from '../components/Navbar1.jsx'; 
 import {Footer} from '../components/Footer.jsx';
@@ -18,7 +17,7 @@ export const Home = () => {
     <>
       <Navegador1 />
       {/* Puedes añadir más contenido de la página aquí, entre el Navegador y el Footer */}
-      <main className={styles.homeContent}>
+      <main>
         <h1>Bienvenido a la Página de Inicio</h1>
         <div className="bg-white">
           <div className="container py-5">
