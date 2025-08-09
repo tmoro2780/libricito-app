@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import { Link } from  'react-router-dom'
 
 export const CardLibro = ({ titulo, autor, precio, genero, imagen }) => {
   return (
@@ -28,7 +29,9 @@ export const CardLibro = ({ titulo, autor, precio, genero, imagen }) => {
             </div>
           </div>
           <Button variant="primary" size="sm" className="mt-3 w-100">
-            Ver Detalles
+              <Link to="/libros/1" className="text-decoration-none text-dark fw-semibold">
+                        Ver Detalles
+              </Link>
           </Button>
         </div>
       </Card.Body>
