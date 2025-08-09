@@ -77,6 +77,7 @@ export class ProductService {
     }
 
     async setProductStock(id_producto: number, stock_nuevo: number) {
+        // Modificar el stock de un producto en la base de datos
         try {
             const producto = await db.producto.update({
                 where: {
@@ -95,6 +96,7 @@ export class ProductService {
     }
 
     async setTagGeneroProducto(id_producto: number, genero: string) {
+        // Añadir un género a un producto en la base de datos
         try {
             const producto = await db.producto.findUnique({
                 where: {
@@ -124,6 +126,21 @@ export class ProductService {
         } catch (error) {
             console.error(error);
             throw new Error("Error al agregar género al producto. Mira los logs para más información.");
+        }
+    }
+    async eliminarProducto(id_producto: number) {
+        // Eliminar un producto de la base de datos
+        try {
+            const producto = await db.producto.delete({
+                where: {
+                    id_producto: id_producto
+                }
+            });
+
+            return producto;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error al eliminar producto. Mira los logs para más información.");
         }
     }
 }
