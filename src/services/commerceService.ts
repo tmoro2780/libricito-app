@@ -163,14 +163,14 @@ export class CommerceService {
         // Eliminar un comercio de la base de datos, atribuido a la cuenta de usuario con sesión iniciada
         try {
             // chequear la existencia del comercio
-            const comercio = await db.comercio.findUnique({
+            const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
                     id_comercio: idCommercio
                 }
             })
 
             // chequear que el usuario sea propietario del comercio
-            if (!idUsuario === comercio.id_propietario) {
+            if (idUsuario !== comercio.id_propietario) {
                 throw new Error(`El usuario no es propietario del comercio.`)
             }
 
