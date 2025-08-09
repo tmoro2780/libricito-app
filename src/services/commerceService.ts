@@ -68,21 +68,39 @@ export class CommerceService {
     async addUserToCommerce(idUsuario: number, idComercio: number) {
         // Añadir un usuario a un comercio por sus IDs.
         try {
+            // chequear existencia del comercio
             await db.comercio.findUniqueOrThrow({
                 where: {
                     id_comercio: idComercio
                 }
             });
+
+            // chequear existencia del usuario
             const usuario = await db.usuario.findUniqueOrThrow({
                 where: {
                     id_usuario: idUsuario
                 }
             });
 
+            // si el usuario no está verificado, lanzar excepción
             if (!usuario.verificado) {
                 throw new Error('El usuario no está verificado.')
             }
 
+            // chequear existencia del usuario en el comercio
+            const existing_user_in_commerce = await db.usuariosComercio.findFirst({
+                where: {
+                    id_comercio: idComercio,
+                    id_usuario: idUsuario
+                }
+            })
+
+            // si el usuario ya está en el comercio, lanzar excepción
+            if (existing_user_in_commerce) {
+                throw new Error('El usuario ya forma parte del comercio.')
+            }
+
+            // añadir usuario al comercio
             const user_in_commerce = await db.usuariosComercio.create({
                 data: {
                     id_comercio: idComercio,
@@ -90,6 +108,7 @@ export class CommerceService {
                 }
             });
 
+            // devolver registro de usuario en el comercio
             return user_in_commerce;
 
         } catch (error) {
@@ -101,17 +120,21 @@ export class CommerceService {
     async deleteUserFromCommerce(idUsuario: number, idComercio: number) { //WIP
         // Eliminar un usuario de un comercio por su ID
         try {
+            // chequear existencia del comercio
             await db.comercio.findUniqueOrThrow({
                 where: {
                     id_comercio: idComercio
                 }
             });
+
+            // chequear existencia del usuario
             await db.usuario.findUniqueOrThrow({
                 where: {
                     id_usuario: idUsuario
                 }
             });
 
+            // chequear existencia del usuario en el comercio
             const user_in_commerce = await db.usuariosComercio.findFirstOrThrow({
                 where: {
                     id_comercio: idComercio,
@@ -120,12 +143,14 @@ export class CommerceService {
             })
             const id_user_in_commerce = user_in_commerce.id_usuario_comercio;
 
+            // eliminar usuario del comercio
             await db.usuariosComercio.delete({
                 where: {
                     id_usuario_comercio: id_user_in_commerce
                 }
             });
 
+            // devolver registro de usuario en el comercio
             return user_in_commerce;
 
         } catch (error) {

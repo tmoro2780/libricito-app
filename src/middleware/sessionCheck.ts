@@ -22,6 +22,15 @@ export class SessionCheck {
         }
     }
 
+    allowIfUserIsCommerceOwner(req: Request, res: Response, next: NextFunction) { // TO DO!!!!!!!
+        if (!req.session.user) {
+            res.status(401).json({ ok: false, error: "No inició sesión" });
+        } else
+        if (req.session.user) {
+            next();
+        }
+    }
+
     allowIfUserIsUnlogged(req: Request, res: Response, next: NextFunction) {
         if (req.session.user) {
             res.status(401).json({ ok: false, error: "Ya inició sesión" });
