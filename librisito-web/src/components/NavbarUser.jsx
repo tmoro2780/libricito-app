@@ -23,8 +23,8 @@ export default function NavbarUser() {
         <nav className="h-16 px-4 md:px-6 flex items-center justify-between gap-4">
             {/* Brand */}
             <Link to="/" className="flex items-center gap-2 font-bold text-gray-900">
-            <img src={bookIcon} alt="Librisito" className="h-6 w-6 object-contain" />
-            <span>Librisito</span>
+            <img src={bookIcon} alt="Libricito" className="h-6 w-6 object-contain" />
+            <span>Libricito</span>
             </Link>
 
             {/* Buscador (desktop) */}

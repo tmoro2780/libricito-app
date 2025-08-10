@@ -22,7 +22,7 @@ export default function Home() {
     <main className="w-full">
 
       {/* HERO */}
-        <section className="max-w-7xl mx-auto px-6 space-y-20 py-16">
+        <section className="max-w-7xl mx-auto px-6 space-y-20 py-8">
             <div className="w-full px-6 py-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                 {/* Columna izquierda */}
@@ -81,7 +81,6 @@ export default function Home() {
                     src={imagenLibreria}
                     alt="Librería"
                     className="w-full max-w-[600px] h-[600px] object-cover rounded-2xl border mx-auto"
-                    style={{ backgroundColor: "rgb(255, 135, 122)" }}
                 />
                 </div>
             </div>
@@ -89,17 +88,19 @@ export default function Home() {
         </section>
 
         {/* FEATURES */}
-        <section className="max-w-7xl mx-auto px-6 space-y-20 py-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-8">
-            {features.map((item, i) => (
-                <div key={i} className="text-center">
-                <div className="bg-white rounded-full w-[100px] h-[100px] mx-auto grid place-items-center shadow-sm">
-                    <img src={item.src} alt={item.title} className="max-w-[50%] max-h-[50%]" />
+        <section className="w-full bg-red-100 py-16">
+            <div className="max-w-6xl mx-auto px-6 space-y-20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-12">
+                {features.map((item, i) => (
+                    <div key={i} className="text-center">
+                    <div className="bg-white rounded-full w-[100px] h-[100px] mx-auto grid place-items-center shadow-sm">
+                        <img src={item.src} alt={item.title} className="max-w-[50%] max-h-[50%]" />
+                    </div>
+                    <h4 className="mt-3 font-semibold text-gray-900">{item.title}</h4>
+                    <p className="text-gray-600 text-sm mt-1">{item.desc}</p>
+                    </div>
+                ))}
                 </div>
-                <h4 className="mt-3 font-semibold text-gray-900">{item.title}</h4>
-                <p className="text-gray-600 text-sm mt-1">{item.desc}</p>
-                </div>
-            ))}
             </div>
         </section>
 
@@ -134,7 +135,7 @@ export default function Home() {
                 ))}
 
                 <Link
-                to="#"
+                to="/faq"
                 className="inline-block mt-2 text-sm font-semibold underline"
                 style={{ color: "rgb(255, 152, 152)" }}
                 >
@@ -145,50 +146,52 @@ export default function Home() {
         </section>
 
         {/* CTA REGISTRO */}
-        <section className="max-w-7xl mx-auto px-6 space-y-20 py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            {/* Texto y lista */}
-            <div>
-                <h2 className="text-4xl font-bold mb-4">
-                Crea tu cuenta ya en Libricito hoy mismo
-                </h2>
+        <section className="w-full bg-red-100 py-16">
+            <div className="max-w-7xl mx-auto px-6 space-y-20 py-16">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                {/* Texto y lista */}
+                    <div>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                            Crea tu cuenta ya en Libricito hoy mismo
+                        </h2>
 
-                <h4 className="text-base text-gray-600 mb-6">
-                Disfruta de una buena experiencia personalizada en la búsqueda de tu libro preferido. Crea tu cuenta para
-                buscar en los locales más cercanos a tu zona.
-                </h4>
+                        <h4 className="text-sm sm:text-base md:text-lg text-gray-600 mb-6">
+                            Disfruta de una buena experiencia personalizada en la búsqueda de tu libro preferido.
+                            Crea tu cuenta para buscar en los locales más cercanos a tu zona.
+                        </h4>
 
-                <ul className="space-y-2 font-semibold text-gray-800">
-                {[
-                    "Consulta el stock de tus libros favoritos",
-                    "Descubre librerías cercanas a ti",
-                    "Usa la herramienta de búsqueda para encontrar tus libros favoritos",
-                    "Deja una reseña sobre tu experiencia en el local",
-                ].map((texto, i) => (
-                    <li key={i} className="flex items-center gap-2">
-                    <span className="text-emerald-600">●</span>
-                    <span>{texto}</span>
-                    </li>
-                ))}
-                </ul>
+                        <ul className="space-y-2 font-semibold text-gray-800">
+                            {[
+                            "Consulta el stock de tus libros favoritos",
+                            "Descubre librerías cercanas a ti",
+                            "Usa la herramienta de búsqueda para encontrar tus libros favoritos",
+                            "Deja una reseña sobre tu experiencia en el local",
+                            ].map((texto, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                                <span className="text-emerald-600">●</span>
+                                <span>{texto}</span>
+                            </li>
+                            ))}
+                        </ul>
 
-                <Link
-                to="/registro"
-                className="inline-flex items-center mt-6 rounded-full px-6 py-3 text-white font-semibold"
-                style={{ backgroundColor: "rgb(255, 137, 137)" }}
-                >
-                Prueba gratis
-                </Link>
-            </div>
+                        <Link
+                            to="/registro"
+                            className="inline-block rounded-lg px-6 py-3 mt-4 text-white text-sm sm:text-base font-medium bg-red-400 hover:bg-red-500 transition"
+                        >
+                            Prueba ahora
+                        </Link>
+                    </div>
+                
 
-            {/* Imagen */}
-            <div className="w-full grid place-items-center">
-                <img
-                src={imagenLibreria}
-                alt="Registro"
-                className="w-[500px] h-[500px] object-cover rounded-2xl shadow-lg border"
-                />
-            </div>
+                    {/* Imagen */}
+                    <div className="w-full grid place-items-center">
+                        <img
+                        src={imagenLibreria}
+                        alt="Registro"
+                        className="w-[500px] h-[500px] object-cover rounded-2xl shadow-lg border"
+                        />
+                    </div>
+                </div>
             </div>
         </section>
 

@@ -21,6 +21,7 @@ import EditarLibro from "./pages/Dashboard/Local/EditarLibro";
 import PerfilUsuario from "./pages/Dashboard/PerfilUsuario";
 import HistorialBusqueda from "./pages/Dashboard/HistorialBusqueda";
 import Favoritos from "./pages/Dashboard/Favoritos";
+import FAQ from "./pages/FAQ";
 
 // (Opcional) ProtectedRoute si luego querés proteger dashboard
 // import ProtectedRoute from "./auth/ProtectedRoute";
@@ -38,7 +39,7 @@ export default function AppRoutes() {
             <Route path="/buscar/locales" element={<BuscarLocales />} />
             <Route path="/buscar/libros" element={<BuscarLibros />} />
             <Route path="/contacto" element={<Contacto />} />
-
+            <Route path="/faq" element={<FAQ />} />
             {/* Autenticación (mismos paths en español que usabas) */}
             <Route path="/registro" element={<Signup />} />
             <Route path="/inicio-sesion" element={<Login />} />
