@@ -22,73 +22,75 @@ export default function Home() {
     <main className="w-full">
 
       {/* HERO */}
-        <section className="max-w-7xl mx-auto px-6 space-y-20 py-8">
-            <div className="w-full px-6 py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                {/* Columna izquierda */}
-                <div>
-                <div className="flex flex-wrap gap-3 pt-2 pb-6">
-                    <Link
-                    to="/novedades"
-                    className="rounded-full px-4 py-2 text-sm font-semibold text-gray-900"
-                    style={{ backgroundColor: "rgb(255, 224, 221)" }}
-                    >
-                    Novedades
-                    </Link>
-                    <Link
-                    to="/nosotros"
-                    className="rounded-full px-4 py-2 text-sm font-semibold text-gray-900"
-                    style={{ backgroundColor: "rgb(255, 244, 243)" }}
-                    >
-                    Aprenda sobre nosotros
-                    </Link>
-                </div>
+        <section className="bg-white w-full">
+            <div className="max-w-7xl mx-auto px-6 space-y-20 py-8">
+                <div className="w-full px-6 py-16">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    {/* Columna izquierda */}
+                    <div>
+                    <div className="flex flex-wrap gap-3 pt-2 pb-6">
+                        <Link
+                        to="/novedades"
+                        className="rounded-full px-4 py-2 text-sm font-semibold text-gray-900"
+                        style={{ backgroundColor: "rgb(255, 224, 221)" }}
+                        >
+                        Novedades
+                        </Link>
+                        <Link
+                        to="/nosotros"
+                        className="rounded-full px-4 py-2 text-sm font-semibold text-gray-900"
+                        style={{ backgroundColor: "rgb(255, 244, 243)" }}
+                        >
+                        Aprenda sobre nosotros
+                        </Link>
+                    </div>
 
-                <h1 className="font-normal text-[40px] sm:text-[56px] leading-tight text-gray-900">
-                    Bienvenido a Libricito
-                </h1>
-                <h2 className="font-normal text-xl text-gray-700 mt-3">
-                    Tu página web favorita para buscar tus libros
-                </h2>
+                    <h1 className="font-normal text-[40px] sm:text-[56px] leading-tight text-gray-900">
+                        Bienvenido a Libricito
+                    </h1>
+                    <h2 className="font-normal text-xl text-gray-700 mt-3">
+                        Tu página web favorita para buscar tus libros
+                    </h2>
 
-                <p className="mt-6 text-gray-600">
-                    Libricito es la plataforma ideal para los amantes de la lectura. Busca y descubrí si tus libros favoritos
-                    se encuentran en stock en librerías cercanas a ti. Conéctate con comercios locales, consulta disponibilidad
-                    antes de visitar y encuentra nuevas lecturas recomendadas.
-                </p>
+                    <p className="mt-6 text-gray-600">
+                        Libricito es la plataforma ideal para los amantes de la lectura. Busca y descubrí si tus libros favoritos
+                        se encuentran en stock en librerías cercanas a ti. Conéctate con comercios locales, consulta disponibilidad
+                        antes de visitar y encuentra nuevas lecturas recomendadas.
+                    </p>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                    to="/inicio-sesion"
-                    className="rounded-lg px-6 py-3 font-semibold text-white"
-                    style={{ backgroundColor: "rgb(255, 224, 221)" }}
-                    >
-                    Iniciar Sesión
-                    </Link>
-                    <Link
-                    to="/registro"
-                    className="rounded-lg px-6 py-3 font-semibold text-gray-900"
-                    style={{ backgroundColor: "rgb(255, 155, 146)" }}
-                    >
-                    Crear Cuenta
-                    </Link>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        <Link
+                        to="/inicio-sesion"
+                        className="rounded-lg px-6 py-3 font-semibold text-white"
+                        style={{ backgroundColor: "rgb(255, 224, 221)" }}
+                        >
+                        Iniciar Sesión
+                        </Link>
+                        <Link
+                        to="/registro"
+                        className="rounded-lg px-6 py-3 font-semibold text-gray-900"
+                        style={{ backgroundColor: "rgb(255, 155, 146)" }}
+                        >
+                        Crear Cuenta
+                        </Link>
+                    </div>
+                    </div>
+
+                    {/* Columna derecha: Imagen */}
+                    <div className="w-full">
+                    <img
+                        src={imagenLibreria}
+                        alt="Librería"
+                        className="w-full max-w-[600px] h-[600px] object-cover rounded-2xl border mx-auto"
+                    />
+                    </div>
                 </div>
                 </div>
-
-                {/* Columna derecha: Imagen */}
-                <div className="w-full">
-                <img
-                    src={imagenLibreria}
-                    alt="Librería"
-                    className="w-full max-w-[600px] h-[600px] object-cover rounded-2xl border mx-auto"
-                />
-                </div>
-            </div>
             </div>
         </section>
 
         {/* FEATURES */}
-        <section className="w-full bg-red-100 py-16">
+        <section className="w-full py-16">
             <div className="max-w-6xl mx-auto px-6 space-y-20">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-12">
                 {features.map((item, i) => (
@@ -105,48 +107,50 @@ export default function Home() {
         </section>
 
         {/* FAQ + CARDS */}
-        <section className="max-w-7xl mx-auto px-6 space-y-20 py-16">
-            <div className="px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Izquierda */}
-            <div>
-                <h5 className="text-sm font-semibold" style={{ color: "rgb(255, 152, 152)" }}>
-                Preguntas Frecuentes
-                </h5>
-                <h2 className="text-4xl sm:text-5xl font-bold mt-2 text-gray-900">
-                ¿Tienes dudas sobre Libricito?
-                </h2>
-                <p className="mt-4 text-gray-600">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste, excepturi mollitia veritatis
-                labore laudantium delectus quis tempore. Sit totam expedita quidem aperiam repudiandae!
-                </p>
-            </div>
-
-            {/* Derecha */}
-            <div>
-                {[...Array(3)].map((_, idx) => (
-                <div key={idx} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-4">
-                    <h3 className="text-xl font-semibold">¿Cómo recupero mi contraseña?</h3>
-                    <p className="text-gray-600 mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tenetur magnam voluptate mollitia
-                    exercitationem temporibus officia ipsum dignissimos, praesentium nulla libero asperiores error soluta
-                    dolores consequuntur! Incidunt delectus eaque provident?
+        <section className="bg-white w-full">
+            <div className="max-w-7xl mx-auto px-6 space-y-20 py-16">
+                <div className="px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                {/* Izquierda */}
+                <div>
+                    <h5 className="text-sm font-semibold" style={{ color: "rgb(255, 152, 152)" }}>
+                    Preguntas Frecuentes
+                    </h5>
+                    <h2 className="text-4xl sm:text-5xl font-bold mt-2 text-gray-900">
+                    ¿Tienes dudas sobre Libricito?
+                    </h2>
+                    <p className="mt-4 text-gray-600">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste, excepturi mollitia veritatis
+                    labore laudantium delectus quis tempore. Sit totam expedita quidem aperiam repudiandae!
                     </p>
                 </div>
-                ))}
 
-                <Link
-                to="/faq"
-                className="inline-block mt-2 text-sm font-semibold underline"
-                style={{ color: "rgb(255, 152, 152)" }}
-                >
-                Ver más preguntas
-                </Link>
-            </div>
+                {/* Derecha */}
+                <div>
+                    {[...Array(3)].map((_, idx) => (
+                    <div key={idx} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-4">
+                        <h3 className="text-xl font-semibold">¿Cómo recupero mi contraseña?</h3>
+                        <p className="text-gray-600 mt-2">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tenetur magnam voluptate mollitia
+                        exercitationem temporibus officia ipsum dignissimos, praesentium nulla libero asperiores error soluta
+                        dolores consequuntur! Incidunt delectus eaque provident?
+                        </p>
+                    </div>
+                    ))}
+
+                    <Link
+                    to="/faq"
+                    className="inline-block mt-2 text-sm font-semibold underline"
+                    style={{ color: "rgb(255, 152, 152)" }}
+                    >
+                    Ver más preguntas
+                    </Link>
+                </div>
+                </div>
             </div>
         </section>
 
         {/* CTA REGISTRO */}
-        <section className="w-full bg-red-100 py-16">
+        <section className="w-full py-16">
             <div className="max-w-7xl mx-auto px-6 space-y-20 py-16">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                 {/* Texto y lista */}
@@ -196,51 +200,53 @@ export default function Home() {
         </section>
 
         {/* COLLAGE REDONDO + TEXTO */}
-        <section className="max-w-7xl mx-auto px-6 space-y-20 py-16">
-            <div className="px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            {/* Imagen grande izquierda */}
-            <div className="w-full grid place-items-center">
-                <img
-                src={imagenLibreria}
-                alt="Librería"
-                className="w-[500px] h-[500px] object-cover rounded-2xl border"
-                />
-            </div>
-
-            {/* Círculos e info */}
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-2 pb-8">
-                {/* Izquierda pequeña */}
-                <div
-                    className="relative z-[1] rounded-full border-4 border-white shadow-sm grid place-items-center"
-                    style={{ width: 110, height: 110, backgroundColor: "rgba(0,0,0,0.25)" }}
-                >
-                    <img src={imagenLibreria} alt="Mini 1" className="rounded-full w-[100px] h-[100px] object-cover" />
+        <section className="bg-white w-full">
+            <div className="max-w-7xl mx-auto px-6 space-y-20 py-10">
+                <div className="px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                {/* Imagen grande izquierda */}
+                <div className="w-full grid place-items-center">
+                    <img
+                    src={imagenLibreria}
+                    alt="Librería"
+                    className="w-[500px] h-[500px] object-cover rounded-2xl border"
+                    />
                 </div>
 
-                {/* Central grande */}
-                <div
-                    className="relative z-[2] rounded-full border-4 border-white shadow grid place-items-center"
-                    style={{ width: 160, height: 160, backgroundColor: "rgba(0,0,0,0.25)" }}
-                >
-                    <img src={imagenLibreria} alt="Mini 2" className="rounded-full w-[150px] h-[150px] object-cover" />
-                </div>
+                {/* Círculos e info */}
+                <div className="text-center">
+                    <div className="flex items-center justify-center gap-2 pb-8">
+                    {/* Izquierda pequeña */}
+                    <div
+                        className="relative z-[1] rounded-full border-4 border-white shadow-sm grid place-items-center"
+                        style={{ width: 110, height: 110, backgroundColor: "rgba(0,0,0,0.25)" }}
+                    >
+                        <img src={imagenLibreria} alt="Mini 1" className="rounded-full w-[100px] h-[100px] object-cover" />
+                    </div>
 
-                {/* Derecha pequeña */}
-                <div
-                    className="relative z-[1] rounded-full border-4 border-white shadow-sm grid place-items-center"
-                    style={{ width: 110, height: 110, backgroundColor: "rgba(0,0,0,0.25)" }}
-                >
-                    <img src={imagenLibreria} alt="Mini 3" className="rounded-full w-[100px] h-[100px] object-cover" />
-                </div>
-                </div>
+                    {/* Central grande */}
+                    <div
+                        className="relative z-[2] rounded-full border-4 border-white shadow grid place-items-center"
+                        style={{ width: 160, height: 160, backgroundColor: "rgba(0,0,0,0.25)" }}
+                    >
+                        <img src={imagenLibreria} alt="Mini 2" className="rounded-full w-[150px] h-[150px] object-cover" />
+                    </div>
 
-                <h2 className="text-3xl font-bold">Registra tu negocio con nosotros</h2>
-                <p className="mt-3 text-gray-600">
-                Estamos aquí para ayudarte. Escríbenos con tus preguntas para resolver tus dudas. Estamos aquí para ayudarte. 
-                Escríbenos con tus preguntas para resolver tus dudas.
-                </p>
-            </div>
+                    {/* Derecha pequeña */}
+                    <div
+                        className="relative z-[1] rounded-full border-4 border-white shadow-sm grid place-items-center"
+                        style={{ width: 110, height: 110, backgroundColor: "rgba(0,0,0,0.25)" }}
+                    >
+                        <img src={imagenLibreria} alt="Mini 3" className="rounded-full w-[100px] h-[100px] object-cover" />
+                    </div>
+                    </div>
+
+                    <h2 className="text-3xl font-bold">Registra tu negocio con nosotros</h2>
+                    <p className="mt-3 text-gray-600">
+                    Estamos aquí para ayudarte. Escríbenos con tus preguntas para resolver tus dudas. Estamos aquí para ayudarte. 
+                    Escríbenos con tus preguntas para resolver tus dudas.
+                    </p>
+                </div>
+                </div>
             </div>
         </section>
     </main>

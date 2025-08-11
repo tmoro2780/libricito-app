@@ -28,7 +28,7 @@ export default function FAQ({ items = faqsDefault, initiallyOpen = 0 }) {
     const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
     return (
-        <section className="w-full bg-white">
+        <section className="w-full h-full bg-white">
         <div className="mx-auto max-w-6xl px-8 sm:px-10 lg:px-12 my-24">
             <div className="mb-12 text-center">
             <p className="mt-3 text-red-300 font-bold">FAQs</p>

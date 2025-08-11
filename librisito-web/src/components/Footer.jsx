@@ -13,7 +13,7 @@ import img from "./../assets/iconos/book.ico";
 
 export default function Footer() {
     return (
-    <footer className="bg-gray-100 text-gray-700 mt-10">
+    <footer className="bg-gray-100 text-gray-700">
         <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             
             {/* Logo y descripción */}
