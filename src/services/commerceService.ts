@@ -1,5 +1,4 @@
 import { db } from "../config/db/db";
-import { UserService } from "./userService";
 
 export class CommerceService {
     // Servicio de gestión de comercios en la base de datos
@@ -65,15 +64,20 @@ export class CommerceService {
         }
     }
 
-    async addUserToCommerce(idUsuario: number, idComercio: number) {
+    async addUserToCommerce(idUsuario: number, idComercio: number, idAccionador: number) {
         // Añadir un usuario a un comercio por sus IDs.
         try {
             // chequear existencia del comercio
-            await db.comercio.findUniqueOrThrow({
+            const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
                     id_comercio: idComercio
                 }
             });
+
+            // chequear que el accionador sea propietario del comercio
+            if (idAccionador !== comercio.id_propietario) {
+                throw new Error(`El propietario del comercio debe realizar esta acción.`)
+            }
 
             // chequear existencia del usuario
             const usuario = await db.usuario.findUniqueOrThrow({
@@ -117,15 +121,20 @@ export class CommerceService {
         }
     }
 
-    async deleteUserFromCommerce(idUsuario: number, idComercio: number) { //WIP
+    async deleteUserFromCommerce(idUsuario: number, idComercio: number, idAccionador: number) { //WIP
         // Eliminar un usuario de un comercio por su ID
         try {
             // chequear existencia del comercio
-            await db.comercio.findUniqueOrThrow({
+            const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
                     id_comercio: idComercio
                 }
             });
+
+            // chequear que el accionador sea propietario del comercio
+            if (idAccionador != comercio.id_propietario) {
+                throw new Error(`El propietario del comercio debe realizar esta acción.`)
+            }
 
             // chequear existencia del usuario
             await db.usuario.findUniqueOrThrow({
@@ -158,8 +167,9 @@ export class CommerceService {
             throw new Error(`Error al eliminar usuario del comercio. Mira los logs para más información.`)
         }
     }
+
     //HAY QUE CHEQUEARLO XQ NO ME CONVENCE
-    async deleteCommerce(idCommercio: number, idUsuario: number, verifNombreComercio: string, verifIdComercio: number) {
+    async deleteCommerce(idCommercio: number, idAccionador: number, verifNombreComercio: string, verifIdComercio: number) {
         // Eliminar un comercio de la base de datos, atribuido a la cuenta de usuario con sesión iniciada
         try {
             // chequear la existencia del comercio
@@ -169,13 +179,13 @@ export class CommerceService {
                 }
             })
 
-            // chequear que el usuario sea propietario del comercio
-            if (idUsuario !== comercio.id_propietario) {
-                throw new Error(`El usuario no es propietario del comercio.`)
+            // chequear que el accionador sea propietario del comercio
+            if (idAccionador != comercio.id_propietario) {
+                throw new Error(`El propietario del comercio debe realizar esta acción.`)
             }
 
             // chequear campos de verificación extra para la eliminación y denegar la operación si no coinciden
-            if (comercio.nombre !== verifNombreComercio || comercio.id_comercio !== verifIdComercio) {
+            if (comercio.nombre != verifNombreComercio || comercio.id_comercio != verifIdComercio) {
                 throw new Error(`El nombre e ID del comercio no coinciden. Por seguridad, no se eliminará el comercio.`)
             }
 

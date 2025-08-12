@@ -37,7 +37,7 @@ model Comercio {
   nombre String
   id_propietario Int
 
-  propietario Usuario @relation(fields: [id_propietario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  propietario Usuario @relation(fields: [id_propietario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
   vendedores UsuariosComercio[]
   tiendas TiendaFisica[]
   productos Producto[]
@@ -89,7 +89,7 @@ model Producto {
   id_propietario   Int
   stock            Int
 
-  propietario Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: NoAction, onUpdate: NoAction)
+  propietario Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: Cascade, onUpdate: NoAction)
   generos TagGeneroProducto[]
   reviews ReviewProducto[]
 }

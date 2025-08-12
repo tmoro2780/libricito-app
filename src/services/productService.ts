@@ -54,9 +54,25 @@ export class ProductService {
         precio_de_lista: number;
         stock: number;
         descripcion?: string;
-    }) {
+    }, id_accionador: number) {
         // Crear un nuevo producto en la base de datos
         try {
+            // chequear existencia del comercio
+            await db.comercio.findUniqueOrThrow({
+                where: {
+                    id_comercio: data.id_propietario
+                }
+            });
+
+            // chequear existencia del usuario en el comercio
+            await db.usuariosComercio.findFirstOrThrow({
+                where: {
+                    id_comercio: data.id_propietario,
+                    id_usuario: id_accionador
+                }
+            })
+
+            // crear producto
             const nuevoProducto = await db.producto.create({
                 data: {
                     nombre: data.nombre,
@@ -76,10 +92,25 @@ export class ProductService {
         }
     }
 
-    async setProductStock(id_producto: number, stock_nuevo: number) {
+    async setProductStock(id_producto: number, stock_nuevo: number, idAccionador: number) {
         // Modificar el stock de un producto en la base de datos
         try {
-            const producto = await db.producto.update({
+            // chequear existencia del producto
+            const producto = await db.producto.findUniqueOrThrow({
+                where: {
+                    id_producto: id_producto
+                }
+            });
+
+            // chequear existencia del usuario en el comercio
+            await db.usuariosComercio.findFirstOrThrow({
+                where: {
+                    id_comercio: producto.id_propietario,
+                    id_usuario: idAccionador
+                }
+            })
+
+            const producto_updated = await db.producto.update({
                 where: {
                     id_producto: id_producto
                 },
@@ -88,7 +119,7 @@ export class ProductService {
                 }
             });
 
-            return producto;
+            return producto_updated;
         } catch (error) {
             console.error(error);
             throw new Error("Error al modificar stock del producto. Mira los logs para más información.");
@@ -98,7 +129,7 @@ export class ProductService {
     async setTagGeneroProducto(id_producto: number, genero: string) {
         // Añadir un género a un producto en la base de datos
         try {
-            const producto = await db.producto.findUnique({
+            const producto = await db.producto.findUniqueOrThrow({
                 where: {
                     id_producto: id_producto
                 }
@@ -128,16 +159,40 @@ export class ProductService {
             throw new Error("Error al agregar género al producto. Mira los logs para más información.");
         }
     }
-    async eliminarProducto(id_producto: number) {
+
+    async eliminarProducto(id_producto: number, id_accionador: number) {
         // Eliminar un producto de la base de datos
         try {
-            const producto = await db.producto.delete({
+            // chequear existencia del producto
+            const producto = await db.producto.findUniqueOrThrow({
                 where: {
                     id_producto: id_producto
                 }
             });
 
-            return producto;
+            // chequear existencia del comercio
+            await db.comercio.findUniqueOrThrow({
+                where: {
+                    id_comercio: producto.id_propietario
+                }
+            });
+
+            // chequear existencia del usuario en el comercio
+            await db.usuariosComercio.findFirstOrThrow({
+                where: {
+                    id_comercio: producto.id_propietario,
+                    id_usuario: id_accionador
+                }
+            })
+
+            // eliminar producto
+            const producto_eliminar = await db.producto.delete({
+                where: {
+                    id_producto: id_producto
+                }
+            });
+
+            return producto_eliminar;
         } catch (error) {
             console.error(error);
             throw new Error("Error al eliminar producto. Mira los logs para más información.");
