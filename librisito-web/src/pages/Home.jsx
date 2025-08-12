@@ -31,14 +31,14 @@ export default function Home() {
                     <div className="flex flex-wrap gap-3 pt-2 pb-6">
                         <Link
                         to="/novedades"
-                        className="rounded-full px-4 py-2 text-sm font-semibold text-gray-900"
+                        className="rounded-full px-4 py-2 text-sm font-semibold !text-gray-900"
                         style={{ backgroundColor: "rgb(255, 224, 221)" }}
                         >
                         Novedades
                         </Link>
                         <Link
-                        to="/nosotros"
-                        className="rounded-full px-4 py-2 text-sm font-semibold text-gray-900"
+                        to="/about"
+                        className="rounded-full px-4 py-2 text-sm font-semibold !text-gray-900"
                         style={{ backgroundColor: "rgb(255, 244, 243)" }}
                         >
                         Aprenda sobre nosotros
