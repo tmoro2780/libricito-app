@@ -132,3 +132,15 @@ commerceRouter.post('/id/:id/eliminar', sessionCheck.allowIfUserIsLogged, async 
         res.status(500).json({ ok: false, error: (error as any).message })
     }
 });
+
+commerceRouter.get('/id/:id/productos', async (req, res) => {
+    // Obtener todos los productos de un comercio de la base de datos
+    try {
+        const idCommercio = parseInt(req.params.id);
+        const productos = await productService.getProductsByCommerce(idCommercio);
+        res.status(200).json({ ok: true, data: productos })
+    } catch (error) {
+        res.status(500).json({ ok: false, error: (error as any).message })
+    }
+}
+)

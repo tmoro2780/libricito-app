@@ -5,7 +5,12 @@ export class CommerceService {
     async getAllCommerces() {
         // Obtener todos los comercios de la base de datos
         try {
-            const comercios = await db.comercio.findMany();
+            const comercios = await db.comercio.findMany({
+                where: {
+                    de_baja: false
+                }
+            }
+            );
 
             return comercios;
         } catch (error) {
@@ -19,7 +24,8 @@ export class CommerceService {
         try {
             const comercio = await db.comercio.findUnique({
                 where: {
-                    id_comercio: commerceId
+                    id_comercio: commerceId,
+                    de_baja: false
                 }
             })
 
@@ -70,7 +76,8 @@ export class CommerceService {
             // chequear existencia del comercio
             const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
-                    id_comercio: idComercio
+                    id_comercio: idComercio,
+                    de_baja: false
                 }
             });
 
@@ -127,7 +134,8 @@ export class CommerceService {
             // chequear existencia del comercio
             const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
-                    id_comercio: idComercio
+                    id_comercio: idComercio,
+                    de_baja: false
                 }
             });
 
@@ -168,14 +176,14 @@ export class CommerceService {
         }
     }
 
-    //HAY QUE CHEQUEARLO XQ NO ME CONVENCE
     async deleteCommerce(idCommercio: number, idAccionador: number, verifNombreComercio: string, verifIdComercio: number) {
         // Eliminar un comercio de la base de datos, atribuido a la cuenta de usuario con sesión iniciada
         try {
             // chequear la existencia del comercio
             const comercio = await db.comercio.findUniqueOrThrow({
                 where: {
-                    id_comercio: idCommercio
+                    id_comercio: idCommercio,
+                    de_baja: false
                 }
             })
 
@@ -190,9 +198,12 @@ export class CommerceService {
             }
 
             // eliminar el comercio
-            await db.comercio.delete({
+            await db.comercio.update({
                 where: {
                     id_comercio: idCommercio
+                },
+                data: {
+                    de_baja: true
                 }
             });
 

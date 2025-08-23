@@ -5,7 +5,11 @@ export class ProductService {
     async getAllProducts() {
         // Obtener todos los productos de la base de datos
         try {
-            const productos = await db.producto.findMany();
+            const productos = await db.producto.findMany({
+                where: {
+                    de_baja: false
+                }
+            });
 
             return productos;
         } catch (error) {
@@ -19,7 +23,8 @@ export class ProductService {
         try {
             const product = await db.producto.findUnique({
                 where: {
-                    id_producto: productId
+                    id_producto: productId,
+                    de_baja: false
                 }
             })
 
@@ -35,7 +40,8 @@ export class ProductService {
         try {
             const products = await db.producto.findMany({
                 where: {
-                    id_propietario: commerceId
+                    id_propietario: commerceId,
+                    de_baja: false
                 }
             })
 
@@ -98,7 +104,8 @@ export class ProductService {
             // chequear existencia del producto
             const producto = await db.producto.findUniqueOrThrow({
                 where: {
-                    id_producto: id_producto
+                    id_producto: id_producto,
+                    de_baja: false
                 }
             });
 
@@ -131,7 +138,8 @@ export class ProductService {
         try {
             const producto = await db.producto.findUniqueOrThrow({
                 where: {
-                    id_producto: id_producto
+                    id_producto: id_producto,
+                    de_baja: false
                 }
             });
 
@@ -166,7 +174,8 @@ export class ProductService {
             // chequear existencia del producto
             const producto = await db.producto.findUniqueOrThrow({
                 where: {
-                    id_producto: id_producto
+                    id_producto: id_producto,
+                    de_baja: false
                 }
             });
 

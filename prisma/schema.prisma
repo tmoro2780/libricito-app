@@ -20,6 +20,7 @@ model Usuario {
   nombres     String
   apellidos   String?
   id_region  Int?
+  de_baja Boolean @default(false)
 
   comercios UsuariosComercio[]
   comercios_propios Comercio[]
@@ -36,6 +37,7 @@ model Comercio {
   fecha_alta DateTime @default(now()) @db.Timestamp(6)
   nombre String
   id_propietario Int
+  de_baja Boolean @default(false)
 
   propietario Usuario @relation(fields: [id_propietario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
   vendedores UsuariosComercio[]
@@ -88,6 +90,7 @@ model Producto {
   precio_de_lista  Decimal @db.Decimal
   id_propietario   Int
   stock            Int
+  de_baja Boolean @default(false)
 
   propietario Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: Cascade, onUpdate: NoAction)
   generos TagGeneroProducto[]

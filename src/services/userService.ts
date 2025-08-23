@@ -100,7 +100,7 @@ export class UserService {
     }
 
     async setGenrePreference(id_usuario: number, genero: string) {
-        // Añadir un género a un usuario en la base de datos
+        // Añadir un género literario de interés a un usuario en la base de datos
         try {
             const usuario = await db.usuario.findUnique({
                 where: {
