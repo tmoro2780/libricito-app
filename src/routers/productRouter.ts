@@ -1,7 +1,9 @@
 import { Router } from "express"
 
 import { ProductService } from "../services/productService"
+import { SessionCheck } from "../middleware/sessionCheck";
 
+const sessionCheck = new SessionCheck();
 const productService = new ProductService();
 
 export const productRouter = Router()
@@ -34,7 +36,7 @@ productRouter.get('/id/:id', async (req, res) => {
 }
 )
 
-productRouter.post('/id/:id/stock', async (req, res) => {
+productRouter.post('/id/:id/stock', sessionCheck.allowIfUserIsLogged, async (req, res) => {
     // Modificar el stock de un producto en la base de datos
     try {
         const productIdToGet = parseInt(req.params.id);
@@ -42,10 +44,20 @@ productRouter.post('/id/:id/stock', async (req, res) => {
         const idAccionador = req.session.user?.id as number;
         const product = await productService.setProductStock(productIdToGet,newStock,idAccionador);
 
-        if (!product) {
-            res.status(404).json({ ok: false, error: 'No se encontró el producto' });
-            return;
-        }
+        res.status(200).json({ ok: true, data: product })
+    } catch (error) {
+        res.status(500).json({ ok: false, error: (error as any).message })
+    }
+}
+)
+
+productRouter.post('/id/:id/tags-genero', sessionCheck.allowIfUserIsLogged, async (req, res) => {
+    // Asignar un tag de género literario a un producto
+    try {
+        const productIdToGet = parseInt(req.params.id);
+        const genero = req.body.nuevo_genero;
+        const idAccionador = req.session.user?.id as number;
+        const product = await productService.setTagGeneroProducto(productIdToGet, genero, idAccionador);
 
         res.status(200).json({ ok: true, data: product })
     } catch (error) {
@@ -53,3 +65,16 @@ productRouter.post('/id/:id/stock', async (req, res) => {
     }
 }
 )
+
+productRouter.post('/id/:id/borrar', sessionCheck.allowIfUserIsLogged, async (req, res) => {
+    // Eliminar un producto de un comercio de la base de datos
+    try {
+        const idProducto = parseInt(req.params.id);
+        const id_accionador = req.session.user?.id as number;
+
+        const producto = await productService.eliminarProducto(idProducto, id_accionador)
+        res.status(200).json({ ok: true, data: producto })
+    } catch (error) {
+        res.status(500).json({ ok: false, error: (error as any).message })
+    }
+});

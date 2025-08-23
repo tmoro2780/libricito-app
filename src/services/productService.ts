@@ -133,7 +133,7 @@ export class ProductService {
         }
     }
 
-    async setTagGeneroProducto(id_producto: number, genero: string) {
+    async setTagGeneroProducto(id_producto: number, genero: string, idAccionador: number) {
         // Añadir un género a un producto en la base de datos
         try {
             const producto = await db.producto.findUniqueOrThrow({
@@ -142,6 +142,14 @@ export class ProductService {
                     de_baja: false
                 }
             });
+
+            // chequear existencia del usuario en el comercio
+            await db.usuariosComercio.findFirstOrThrow({
+                where: {
+                    id_comercio: producto.id_propietario,
+                    id_usuario: idAccionador
+                }
+            })
 
             const tag_existente = await db.tagGeneroProducto.findFirst({
                 where: {
