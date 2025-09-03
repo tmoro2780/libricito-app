@@ -4,9 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 // Páginas
 import Home from "./pages/Home";
 import Local from "./pages/Locales/Local";
-import Locales from "./pages/Locales/Locales";
 import Libro from "./pages/Libros/Libro";
-import Libros from "./pages/Libros/Libros";
 import BuscarLocales from "./pages/Buscar/BuscarLocales";
 import BuscarLibros from "./pages/Buscar/BuscarLibros";
 import Contacto from "./pages/Contacto";
@@ -33,9 +31,7 @@ export default function AppRoutes() {
         <Route element={<MainLayout />}>
             {/* Inicio y Búsqueda */}
             <Route path="/" element={<Home />} />
-            <Route path="/locales" element={<Locales />} />
             <Route path="/locales/:id" element={<Local />} />
-            <Route path="/libros" element={<Libros />} />
             <Route path="/libros/:id" element={<Libro />} />
             <Route path="/buscar/locales" element={<BuscarLocales />} />
             <Route path="/buscar/libros" element={<BuscarLibros />} />
