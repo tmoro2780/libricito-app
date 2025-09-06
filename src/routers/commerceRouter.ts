@@ -117,21 +117,21 @@ commerceRouter.post('/id/:id/borrar-producto', sessionCheck.allowIfUserIsLogged,
         res.status(500).json({ ok: false, error: (error as any).message })
     }
 });
-
-commerceRouter.post('/id/:id/eliminar', sessionCheck.allowIfUserIsLogged, async (req, res) => {
+//No hay eliminado logico. Esta mal
+//commerceRouter.post('/id/:id/eliminar', sessionCheck.allowIfUserIsLogged, async (req, res) => {
     // Eliminar un comercio de la base de datos, atribuido a la cuenta de usuario con sesión iniciada
-    try {
-        const idCommercio = parseInt(req.params.id);
-        const idPropietario = req.session.user?.id as number;
-        const verifNombreComercio = req.body.verif_nombre_comercio;
-        const verifIdComercio = parseInt(req.body.verif_id_comercio);
-
-        const deleted = await commerceService.deleteCommerce(idCommercio, idPropietario, verifNombreComercio, verifIdComercio);
-        res.status(200).json({ ok: true, data: deleted })
-    } catch (error) {
-        res.status(500).json({ ok: false, error: (error as any).message })
-    }
-});
+//    try {
+//        const idCommercio = parseInt(req.params.id);
+//        const idPropietario = req.session.user?.id as number;
+//        const verifNombreComercio = req.body.verif_nombre_comercio;
+//        const verifIdComercio = parseInt(req.body.verif_id_comercio);
+//
+//        const deleted = await commerceService.deleteCommerce(idCommercio, idPropietario, verifNombreComercio, verifIdComercio);
+//        res.status(200).json({ ok: true, data: deleted })
+//    } catch (error) {
+//        res.status(500).json({ ok: false, error: (error as any).message })
+//    }
+//});
 
 commerceRouter.get('/id/:id/productos', async (req, res) => {
     // Obtener todos los productos de un comercio de la base de datos
