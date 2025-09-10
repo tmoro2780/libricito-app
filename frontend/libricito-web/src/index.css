@@ -1,0 +1,25 @@
+/* Tailwind v4 */
+@import "tailwindcss";
+
+/* Reset mínimo para usar todo el ancho/alto */
+:root { color-scheme: light; }
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: #111827; /* gray-900 */
+  display: block;            /* <- QUITA el centrado del template */
+}
+
+/* Opcional: saneamos enlaces/botones del template */
+a { color: inherit; text-decoration: none; }
+button { all: unset; }
+button { 
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
