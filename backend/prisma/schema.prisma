@@ -1,0 +1,175 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Usuario {
+  id_usuario Int  @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  email   String @unique
+  clave String
+  verificado Boolean @default(false)
+  moderador Boolean @default(false)
+  nombres     String
+  apellidos   String?
+  id_region  Int?
+  de_baja Boolean @default(false)
+
+  comercios UsuariosComercio[]
+  comercios_propios Comercio[]
+  region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
+  intereses UsuarioPreferencias[]
+  reviews_producto ReviewProducto[]
+  reviews_comercio ReviewComercio[]
+  moderaciones_review_prod LogModeracionReviewProd[]
+  moderaciones_review_com LogModeracionReviewCom[]
+}
+
+model Comercio {
+  id_comercio Int @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  nombre String
+  id_propietario Int
+  de_baja Boolean @default(false)
+
+  propietario Usuario @relation(fields: [id_propietario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+  vendedores UsuariosComercio[]
+  tiendas TiendaFisica[]
+  productos Producto[]
+  reviews ReviewComercio[]
+}
+
+model UsuariosComercio {
+  id_usuario_comercio Int @id @default(autoincrement())
+  id_usuario Int
+  id_comercio Int
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TiendaFisica {
+  id_tienda      Int  @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  id_comercio  Int
+  nombre         String?
+  direccion      String
+  id_region      Int
+
+  comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
+  region Region? @relation(fields: [id_region], references: [id_region], onDelete: NoAction, onUpdate: NoAction)
+  horarios HorarioAbierto[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model HorarioAbierto {
+  id_registro_horario Int    @id @default(autoincrement())
+  id_tienda           Int
+  hora_apertura       DateTime @db.Timestamptz(6)
+  hora_cierre         DateTime @db.Timestamptz(6)
+  dia_semana          DateTime? @db.Date
+
+  tienda TiendaFisica @relation(fields: [id_tienda], references: [id_tienda], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Producto {
+  id_producto     Int   @id @default(autoincrement())
+  fecha_alta DateTime @default(now()) @db.Timestamp(6)
+  nombre           String
+  autor            String
+  editorial        String
+  descripcion      String?
+  precio_de_lista  Decimal @db.Decimal
+  id_propietario   Int
+  stock            Int
+  de_baja Boolean @default(false)
+
+  propietario Comercio @relation(references: [id_comercio], fields: [id_propietario], onDelete: Cascade, onUpdate: NoAction)
+  generos TagGeneroProducto[]
+  reviews ReviewProducto[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TagGeneroProducto {
+  id_genero_producto Int  @id @default(autoincrement())
+  id_producto        Int
+  genero             String
+
+  producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ReviewProducto {
+  id_review    Int   @id @default(autoincrement())
+  fecha_posteo DateTime @default(now()) @db.Timestamp(6)
+  id_usuario   Int
+  id_producto  Int
+  texto_review String?
+  puntuacion   Int
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  producto Producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction)
+  moderado_por LogModeracionReviewProd[]
+}
+
+model ReviewComercio {
+  id_review    Int   @id @default(autoincrement())
+  fecha_posteo DateTime @default(now()) @db.Timestamp(6)
+  id_usuario   Int
+  id_comercio  Int
+  texto_review String?
+  puntuacion   Int
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  comercio Comercio @relation(fields: [id_comercio], references: [id_comercio], onDelete: NoAction, onUpdate: NoAction)
+  moderado_por LogModeracionReviewCom[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UsuarioPreferencias {
+  id_registro_preferencias Int  @id @default(autoincrement())
+  id_usuario               Int
+  genero                   String
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model LogModeracionReviewProd {
+  id_logmod_review Int  @id @default(autoincrement())
+  fecha_mod DateTime @default(now()) @db.Timestamp(6)
+  id_moderador Int
+  id_review         Int
+  motivo_moderacion String
+
+  moderador Usuario @relation(fields: [id_moderador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  review ReviewProducto @relation(fields: [id_review], references: [id_review], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model LogModeracionReviewCom {
+  id_logmod_review Int  @id @default(autoincrement())
+  fecha_mod DateTime @default(now()) @db.Timestamp(6)
+  id_moderador Int
+  id_review         Int
+  motivo_moderacion String
+
+  moderador Usuario @relation(fields: [id_moderador], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  review ReviewComercio @relation(fields: [id_review], references: [id_review], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Region {
+  id_region Int  @id @default(autoincrement())
+  nombre    String
+
+  usuarios Usuario[]
+  tiendas TiendaFisica[]
+}
